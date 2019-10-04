@@ -41,5 +41,25 @@ if (isset($_POST['busdrop_option'])){ // bus line
     die(json_encode($array));
 }
 
+if (isset($_POST['dropdownmenu'])){ // bus line 
+
+    $busoption=$_POST['busdrop_option'];
+    $sql = $conn->query("SELECT `30k3p`,`30k3p+n`,`70k3p`,`70k3p+n`,`cu`,`100030k3p`,`100030k3p+n`,`100070k3p`,`100070k3p+n` FROM `busbars` WHERE `busbar_size`='$busoption'");
+    $array=array();
+    while ($row = $sql->fetch_assoc()) {            
+        $array = array(
+            '30k3p' => $row['30k3p'],
+            '30k3p+n' => $row['30k3p+n'],
+            '70k3p' => $row['70k3p'],
+            '70k3p+n' => $row['70k3p+n'],
+            '200cu' => $row['cu'],
+            '100030k3p' => $row['100030k3p'],
+            '100030k3p+n' => $row['100030k3p+n'],
+            '100070k3p' => $row['100070k3p'],
+            '100070k3p+n' => $row['100070k3p+n'],
+        );
+    }
+    die(json_encode($array));
+}
 
 ?>

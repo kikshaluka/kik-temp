@@ -231,7 +231,6 @@ function busdrop(val){ // bus dropdown menu
           }
         });
 }
-
 function buslencalc(){ // weight over bus bar calculation
 
   var krating=document.getElementById('krating').value;
