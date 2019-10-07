@@ -62,18 +62,4 @@ if (isset($_POST['dropdownmenu'])){ // bus line
     die(json_encode($array));
 }
 
-if (isset($_POST['Log In'])){ // index login
-
-    $options = [
-        'cost' => 12,
-    ];
-    echo password_hash("rasmuslerdorf", PASSWORD_BCRYPT, $options);
-
-    $sql = $conn->query("SELECT `busbar_size` FROM `busbars` where `rated_current`='$rcoption'");
-    $array=array();
-    while ($row = $sql->fetch_assoc()) {            
-            array_push($array,$row['busbar_size']);
-    }
-    die(json_encode($array));
-}
 ?>
