@@ -44,7 +44,8 @@ if (isset($_POST['busdrop_option'])){ // bus line
 if (isset($_POST['dropdownmenu'])){ // bus line 
 
     $busoption=$_POST['busdrop_option'];
-    $sql = $conn->query("SELECT `30k3p`,`30k3p+n`,`70k3p`,`70k3p+n`,`cu`,`100030k3p`,`100030k3p+n`,`100070k3p`,`100070k3p+n` FROM `busbars` WHERE `busbar_size`='$busoption'");
+    $sql = $conn->query("SELECT `30k3p`,`30k3p+n`,`70k3p`,`70k3p+n`,`cu`,`100030k3p`,`100030k3p+n`,
+    `100070k3p`,`100070k3p+n` FROM `busbars` WHERE `busbar_size`='$busoption'");
     $array=array();
     while ($row = $sql->fetch_assoc()) {            
         $array = array(
@@ -58,6 +59,16 @@ if (isset($_POST['dropdownmenu'])){ // bus line
             '100070k3p' => $row['100070k3p'],
             '100070k3p+n' => $row['100070k3p+n'],
         );
+    }
+    die(json_encode($array));
+}
+
+if (isset($_POST['usrtableload'])){
+    $sql = $conn->query("SELECT `emp_no`,`name` FROM users ORDER BY `name` ASC");
+    $array=array();
+    while ($row = $sql->fetch_assoc()) {
+            array_push($array,$row['emp_no']);              
+            array_push($array,$row['name']);
     }
     die(json_encode($array));
 }
