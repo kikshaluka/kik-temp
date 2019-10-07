@@ -21,6 +21,7 @@
     <button type="button" class="btn btn-primary">Item Management</button>
   </div>
 </div>
-
+<table>
+</table>
 </body>
 </html>
