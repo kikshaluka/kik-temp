@@ -63,7 +63,7 @@ if (isset($_POST['dropdownmenu'])){ // bus line
     die(json_encode($array));
 }
 
-if (isset($_POST['usrtableload'])){
+if (isset($_POST['usrtableload'])){ // IT-home.php - users table 
     $sql = $conn->query("SELECT `emp_no`,`name` FROM users ORDER BY `name` ASC");
     $array=array();
     while ($row = $sql->fetch_assoc()) {
@@ -72,5 +72,41 @@ if (isset($_POST['usrtableload'])){
     }
     die(json_encode($array));
 }
+
+if (isset($_POST['neweng'])){
+
+    $name=$_POST['engname'];
+    $empno=$_POST['engemp'];
+    $pass=$_POST['engpass'];
+
+    $options = [
+        'cost' => 6,
+    ];
+    $pass = password_hash($pass, PASSWORD_BCRYPT, $options);
+
+    $sql = $conn->query("INSERT INTO `users`(`emp_no`, `name`, `password`, `user_name`) 
+    VALUES ('$empno','$name','$pass','$name')");
+    $array=array();
+    if ($conn->query($sql) === TRUE) {
+        $array = array(
+            'value' => '1',
+            'message' => 'Account created',
+        );
+        $conn->close();
+    } else {
+        $array = array(
+            'value' => '0',
+            'message' => ''. $conn->error,
+        );
+        $conn->close();
+    }
+    
+    
+    die(json_encode($array));
+    
+
+
+}
+
 
 ?>
