@@ -80,12 +80,12 @@ if (isset($_POST['neweng'])){
     $pass=$_POST['engpass'];
 
     $options = [
-        'cost' => 6,
+        'cost' => 12,
     ];
     $pass = password_hash($pass, PASSWORD_BCRYPT, $options);
 
-    $sql = $conn->query("INSERT INTO `users`(`emp_no`, `name`, `password`, `user_name`) 
-    VALUES ('$empno','$name','$pass','$name')");
+    $sql = "INSERT INTO `users`(`emp_no`, `name`, `password`, `user_name`) 
+    VALUES ('$empno','$name','$pass','$name')";
     $array=array();
     if ($conn->query($sql) === TRUE) {
         $array = array(
@@ -96,12 +96,11 @@ if (isset($_POST['neweng'])){
     } else {
         $array = array(
             'value' => '0',
-            'message' => ''. $conn->error,
+            'message' => ''. $conn->errno,
         );
         $conn->close();
     }
-    
-    
+
     die(json_encode($array));
     
 

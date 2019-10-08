@@ -35,6 +35,7 @@
         <h4 class="modal-title">Add New Engineer</h4>
       </div>
       <div class="modal-body">
+      <form>
       <div class="form-group">
           <label for="email">Employee Number:</label>
           <input type="number" class="form-control" id="aempnumber">
@@ -47,9 +48,10 @@
           <label for="pwd">Password:</label>
           <input type="password" class="form-control" id="ausrpwd">
         </div>
+        </form>
       </div>
       <div class="modal-footer">
-      <button type="button" class="btn btn-success" onclick="addnewuser('aempnumber','ausername','ausrpwd')">Create</button>
+      <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addnewuser('aempnumber','ausername','ausrpwd')">Create</button>
       </div>
     </div>
 
@@ -149,18 +151,15 @@ function itemtableload(){ //item load table
         });
 }
 
-function addnewuser(empno,name,pass){
+function addnewuser(empno,name,pass){ // add new engineer 
   var empno = document.getElementById(empno).value;
   var name = document.getElementById(name).value;
   var pass = document.getElementById(pass).value;
-  /*alert(empno);
-  alert(name);
-  alert(pass);*/
+
   if (empno==""||name==""||pass==""){
     alert("Every textbox need to be filled correctly");
   }
   else{
-    alert("Ready to go");
     $.ajax({
           type: 'POST',
           url: 'ajax.php',
@@ -178,8 +177,16 @@ function addnewuser(empno,name,pass){
                 alert(response['message']);
               }
               else{
-                alert(response['message']);
+                if(response['message']=="1062"){
+                  alert("Duplicate Entry");
+                }
+                else{
+                  alert("An error occured");
+                }
               }
+              $('#adduserModal').on('hidden.bs.modal', function () {
+              $(this).find('form').trigger('reset');
+})
           }
         });
   }
