@@ -42,7 +42,7 @@
         <input class="form-control" id="usrcpass" placeholder="Repeat password" type="password">
     </div> <!-- form-group// -->                                      
     <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-block" onclick="confirmpassmatch() "> Create Account  </button>
+        <button type="button" class="btn btn-primary btn-block" onclick="exceptionH()"> Create Account  </button>
     </div> <!-- form-group// -->      
     <p class="text-center">Have an account? <a href="">Log In</a> </p>                                                                 
 </form>
@@ -54,18 +54,99 @@
 </body>
 <script>
 
-function confirmpassmatch(){ //check whether the passwords are matching 
-    var pass=document.getElementById("usrpass").value;
-    var cpass=document.getElementById("usrcpass").value;
-    if (pass===cpass){
-        alert("working");
+function exceptionH(){
+    EmailAccountVerify(); // email account verify
+    confirmpassmatch(); //password confirm
+    if(EmailAccountVerify()&&confirmpassmatch()){
+        alert("All good");
     }
     else{
-        document.getElementById("usrcpass").className = document.getElementById("usrcpass").className + " error";  // this adds the error class
+        errorAlert("Check below boxes",2000);
+    }  
+}
+
+function confirmpassmatch()//check whether the passwords are matching 
+{ 
+    var pass=document.getElementById("usrpass").value;
+    var cpass=document.getElementById("usrcpass").value;
+    if(pass==""||cpass==""){
+        document.getElementById("usrpass").style.borderColor = "red";
+        document.getElementById("usrcpass").style.borderColor = "red";
+        return false;
+    }else{
+        if (pass!=cpass){
+            document.getElementById("usrpass").style.borderColor = "red";
+            document.getElementById("usrcpass").style.borderColor = "red";
+            return false;
+        }
+        else{
+            document.getElementById("usrpass").style.borderColor = "gray";
+            document.getElementById("usrcpass").style.borderColor = "gray";
+            return true;
+        }
     }
+    
+}
+
+function validateEmail(email) { // 
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+
+function EmailAccountVerify() { // Check whether an valid email address
+  var email = $("#usremail").val();
+  if (!validateEmail(email)) {
+    document.getElementById("usremail").style.borderColor = "red";
+    return false;
+  }
+  else{
+    document.getElementById("usremail").style.borderColor = "grey";
+    return true;
+  } 
 }
 
 
+function errorAlert(msg,duration) // generate an error message
+{
+     var el = document.createElement("div");
+     el.setAttribute("style","position:absolute;top:2%;left:45%;background-color:red; color:white;");
+     el.innerHTML = msg;
+     setTimeout(function(){
+      el.parentNode.removeChild(el);
+     },duration);
+     document.body.appendChild(el);
+}
+
+function signup(){
+
+    var mail=document.getElementById("usremail").value;
+    var name=document.getElementById("usrname").value;
+    var pass=document.getElementById("usrpass").value;
+
+    $.ajax({
+          type: 'POST',
+          url: 'ajax.php',
+          data:
+          {
+            sign_up: yes,
+            uname:name,
+            umail:mail,
+            upass:pass
+            },
+          dataType:'json',
+          success: function drop (response) {
+            $('#200303p').val(response['30k3p']);
+            $('#200303pn').val(response['30k3p+n']);
+            $('#200703p').val(response['70k3p']);
+            $('#200703pn').val(response['70k3p+n']);
+            $('#200cu').val(response['200cu']);
+            $('#1000303p').val(response['100030k3p']);
+            $('#1000303pn').val(response['100030k3p+n']);
+            $('#1000703p').val(response['100070k3p']);
+            $('#1000703pn').val(response['100070k3p+n']);
+          }
+        });
+}
 
 </script>
 </html>
