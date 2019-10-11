@@ -104,8 +104,6 @@ function EmailAccountVerify() { // Check whether an valid email address
     return true;
   } 
 }
-
-
 function errorAlert(msg,duration) // generate an error message
 {
      var el = document.createElement("div");
@@ -116,6 +114,18 @@ function errorAlert(msg,duration) // generate an error message
      },duration);
      document.body.appendChild(el);
 }
+
+function successAlert(msg,duration) // generate a success message
+{
+     var el = document.createElement("div");
+     el.setAttribute("style","position:absolute;top:2%;left:45%;background-color:#0fff00; color:black;");
+     el.innerHTML = msg;
+     setTimeout(function(){
+      el.parentNode.removeChild(el);
+     },duration);
+     document.body.appendChild(el);
+}
+
 
 function usrsignup(){
     alert('ok');
@@ -135,13 +145,16 @@ function usrsignup(){
             },
           dataType:'json',
           success: function usrsignup (response) {
-            if(response["message"]=="1062"){
-                errorAlert("Email exist please login",2000);
-                //alert("Email exist please login");
+            if(response["value"]=="0"){
+                if(response["message"]=="1062"){
+                    errorAlert("Email exist please login",3000);
+                }
             }
-            else{
-                alert(response["message"]);
-            }
+            else 
+                if(response["value"]=="1"){
+                    successAlert("pin sent to email", 3000);
+                    location.replace("login.php");
+                }
           }
         });
 }

@@ -10,6 +10,9 @@
         $options = [
             'cost' => 12,
         ];
+        $str1="sxojjfmkcvjfskfoiro";
+        $str2="judfhiurklfnsdifhreis";
+        $pass=$str1.$pass.$str2; // To strengthen the password
         $pass = password_hash($pass, PASSWORD_BCRYPT, $options);
     
         $sql = "INSERT INTO `cus_users`(`user_name`, `user_password`, `user_email`, `user_type`, `user_pin`, `pin_statues`) 
@@ -18,13 +21,13 @@
         if ($conn->query($sql) === TRUE) {
 
             $array = array(
-                'value' => '1',
+                'value' => '1', // 1=success
                 'message' => 'Account created',
             );
             $conn->close();
         } else {
             $array = array(
-                'value' => '0',
+                'value' => '0', // 0= error
                 'message' => ''. $conn->errno,
             );
             $conn->close();

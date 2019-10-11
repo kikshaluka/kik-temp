@@ -35,7 +35,7 @@
 </body>
 <script>
 
-    function send(val){
+    function send(val){ 
        var uname = document.getElementById('login').value;
        var password = document.getElementById('password').value;
        var str1="sxojjfmkcvjfskfoiro";
@@ -45,16 +45,16 @@
           type: 'POST',
           url: 'ajax.php',
           data:
-          {
+            {
             val_option=val,  
             name: uname,
             pass=password
             },
           dataType:'json',
-          success: function drop (response) {
+          success: function send (response) {
             alert("DID");
           }
         });
-    }
+      }
 
 </script>
