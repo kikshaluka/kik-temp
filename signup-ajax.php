@@ -1,21 +1,22 @@
 <?php
     include('conn.php');
 
-    if (isset($_POST['neweng'])){
+    if (isset($_POST['sign_up'])){
 
         $name=$_POST['uname'];
         $pass=$_POST['upass'];
-        $mail=$_POST['mail'];
+        $mail=$_POST['umail'];
     
         $options = [
             'cost' => 12,
         ];
         $pass = password_hash($pass, PASSWORD_BCRYPT, $options);
     
-        $sql = "INSERT INTO `users`(`emp_no`, `user_name`, `user_password`, `user_type`, `user_pin`, `pin_statues`) 
-        VALUES ('0','$name','$pass','u','123456','N')";
+        $sql = "INSERT INTO `cus_users`(`user_name`, `user_password`, `user_email`, `user_type`, `user_pin`, `pin_statues`) 
+        VALUES ('$name','$pass','$mail','u','123456','N')";
         $array=array();
         if ($conn->query($sql) === TRUE) {
+
             $array = array(
                 'value' => '1',
                 'message' => 'Account created',
@@ -29,5 +30,13 @@
             $conn->close();
         } 
         die(json_encode($array));
+    }
+
+    function pin($id){ // pin generator
+        $text=time();
+        $str=$text.$id;
+        $str=str_shuffle($str);
+        $str=substr($str,0,6);
+        return $str;
     }
 ?>

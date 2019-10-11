@@ -16,7 +16,6 @@
 <article class="card-body mx-auto" style="max-width: 400px;">
 	<h4 class="card-title mt-3 text-center">Create Account</h4>
 	<p class="text-center">Get started with your free account</p>
-	<form>
 	<div class="form-group input-group">
 		<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
@@ -45,7 +44,6 @@
         <button type="button" class="btn btn-primary btn-block" onclick="exceptionH()"> Create Account  </button>
     </div> <!-- form-group// -->      
     <p class="text-center">Have an account? <a href="">Log In</a> </p>                                                                 
-</form>
 </article>
 </div> <!-- card.// -->
 
@@ -58,6 +56,8 @@ function exceptionH(){
     EmailAccountVerify(); // email account verify
     confirmpassmatch(); //password confirm
     if(EmailAccountVerify()&&confirmpassmatch()){
+        
+       usrsignup();
         alert("All good");
     }
     else{
@@ -117,33 +117,31 @@ function errorAlert(msg,duration) // generate an error message
      document.body.appendChild(el);
 }
 
-function signup(){
-
+function usrsignup(){
+    alert('ok');
     var mail=document.getElementById("usremail").value;
     var name=document.getElementById("usrname").value;
     var pass=document.getElementById("usrpass").value;
 
     $.ajax({
           type: 'POST',
-          url: 'ajax.php',
+          url: 'signup-ajax.php',
           data:
           {
-            sign_up: yes,
+            sign_up: 'yes',
             uname:name,
             umail:mail,
             upass:pass
             },
           dataType:'json',
-          success: function drop (response) {
-            $('#200303p').val(response['30k3p']);
-            $('#200303pn').val(response['30k3p+n']);
-            $('#200703p').val(response['70k3p']);
-            $('#200703pn').val(response['70k3p+n']);
-            $('#200cu').val(response['200cu']);
-            $('#1000303p').val(response['100030k3p']);
-            $('#1000303pn').val(response['100030k3p+n']);
-            $('#1000703p').val(response['100070k3p']);
-            $('#1000703pn').val(response['100070k3p+n']);
+          success: function usrsignup (response) {
+            if(response["message"]=="1062"){
+                errorAlert("Email exist please login",2000);
+                //alert("Email exist please login");
+            }
+            else{
+                alert(response["message"]);
+            }
           }
         });
 }
