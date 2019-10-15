@@ -16,7 +16,7 @@
 <body>
 
 <div class="container">
-  <h3>Heat tempreture </h3>
+  <h3>Heat Tempreture Rise Calculator</h3>
   <div class="row">
   <div class="col-lg-6">
   <form class="form-horizontal">
@@ -24,7 +24,7 @@
     <label class="control-label col-sm-3" for="csys">Cooling System:</label>
     <div class="col-sm-5">
         <select class="form-control" id="csys" onchange="selFunction(this.value)">
-          <option value="0">0</option>
+          <option value="select a valid option">--select option--</option>
             <option value="natural">Natural Ventilasion</option>
             <option value="forced">Forced Ventilasion</option>
             <option value="air">Air Condition</option>
