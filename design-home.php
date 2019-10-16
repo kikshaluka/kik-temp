@@ -242,14 +242,14 @@
 <script>
 
 // Short-form of `document.ready`
-$(function(){
+$(function(){ //Hide all the divs on start
     $("#natural").hide();
     $("#forced").hide();
     $("#air").hide();
 });
 
 
-function myFunction(one,two,three) {
+function myFunction(one,two,three) { // Div selection to hide
   var x = document.getElementById(one);
   var y = document.getElementById(two);
   var z = document.getElementById(three);
@@ -260,7 +260,7 @@ function myFunction(one,two,three) {
   }} 
 
 
-  function selFunction(name) {
+  function selFunction(name) { // //Div box selection function
   var selection=name;
   switch(selection) {
   case 'natural':
@@ -277,6 +277,44 @@ function myFunction(one,two,three) {
 } 
   
 } 
+
+function calcutaion(){
+
+  var height = document.getElementById('dheight');
+  var width = document.getElementById('dwidth');
+  var depth = document.getElementById('ddepth');
+  var top=width*depth; //top
+  var frbk=width*height; //front and back
+  var lfrh=height*width; //left and right
+    
+  
+
+  $.ajax({
+          type: 'POST',
+          url: 'ajax.php',
+          data:
+          {
+            busdrop_option: val
+          },
+          dataType:'json',
+          success: function drop (response) {
+            $('#200303p').val(response['30k3p']);
+            $('#200303pn').val(response['30k3p+n']);
+            $('#200703p').val(response['70k3p']);
+            $('#200703pn').val(response['70k3p+n']);
+            $('#200cu').val(response['200cu']);
+            $('#1000303p').val(response['100030k3p']);
+            $('#1000303pn').val(response['100030k3p+n']);
+            $('#1000703p').val(response['100070k3p']);
+            $('#1000703pn').val(response['100070k3p+n']);
+          }
+        });
+
+
+}
+
+
+
 
 </script>
 
