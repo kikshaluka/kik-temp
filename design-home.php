@@ -46,10 +46,11 @@
   <div class="form-group"> <!--Enclosure Type drop down-->
       <label class="control-label col-sm-3" for="etype">Enclosure Type:</label>
       <div class="col-sm-5">
-        <select class="form-control" id="etype">
-            <option>Free standing panel</option>
-            <option>Free standing cubicle</option>
-            <option>Wall Mounted</option>
+        <select class="form-control" id="etype" name="etype">
+            <option value="0">0</option>
+            <option value="Free standing panel">Free standing panel</option>
+            <option value="Free standing cubicle">Free standing cubicle</option>
+            <option value="Wall Mounted">Wall Mounted</option>
         </select>
     </div>
     </div>
@@ -57,9 +58,8 @@
     <div class="form-group">
       <label class="control-label col-sm-3" for="pos">Position:</label>
       <div class="col-sm-5">
-        <select class="form-control" id="pos">
+        <select class="form-control" id="pos" name="pos">
           <option value="0">0</option>
-          <option value="separated">Separated</option>
           <option value="surface">Surface Mounted</option>
           <option value="flush">Flush Mounted</option>
         </select>
@@ -238,7 +238,6 @@
 </div>
 </body>
 
-
 <script>
 
 // Short-form of `document.ready`
@@ -246,6 +245,15 @@ $(function(){ //Hide all the divs on start
     $("#natural").hide();
     $("#forced").hide();
     $("#air").hide();
+});
+
+// Position Type change according Enclosure Type
+let prices = {"Free standing panel":[{value:"separated",desc:"separated"},{value:"wall attached",desc:"wall attached"}],
+              "Free standing cubicle":[{value:"First / Last Separated",desc:"First / Last Separated"},{value:"First / Last Wall Attached",desc:"First / Last Wall Attached"},{value:"Central Separated",desc:"Central Separated"},{value:"Central Wall Attached",desc:"Central Wall Attached"}],
+              "Wall Mounted":[{value:"Surface Mounted",desc:"Surface Mounted"},{value:"Flush Mounted",desc:"Flush Mounted"}]}
+
+  document.getElementsByName('etype')[0].addEventListener('change', function(e) {
+  document.getElementsByName('pos')[0].innerHTML = prices[this.value].reduce((acc, elem) => `${acc}<option value="${elem.value}">${elem.desc}</option>`, "");
 });
 
 
@@ -278,15 +286,22 @@ function myFunction(one,two,three) { // Div selection to hide
   
 } 
 
-function calcutaion(){
+function calcutaion(){  //A0 Calculation
 
   var height = document.getElementById('dheight');
   var width = document.getElementById('dwidth');
   var depth = document.getElementById('ddepth');
-  var top=width*depth; //top
-  var frbk=width*height; //front and back
-  var lfrh=height*width; //left and right
+  var dfac = document.getElementById('width Factor');
+
+  var top=((width/dfac)*depth)/(1000*1000); //top
+  var frbk=((width/dfac)*height)/(1000*1000); //front and back
+  var lfrh=depth/height; //left and right
+
+    var x = (2200 % 1500); // this to get when size is less than 1500 width
+    var y = Math.floor(2200/1500);  // this plus modulus make separation 2 width
+
     
+
   
 
   $.ajax({
