@@ -9,38 +9,22 @@
 
 include('conn.php');
 
-if (isset($_POST['neweng'])){
+if (isset($_POST['pos'])){ // position 
 
-    $name=$_POST['engname'];
-    $empno=$_POST['engemp'];
-    $pass=$_POST['engpass'];
-
-    $options = [
-        'cost' => 12,
-    ];
-    $pass = password_hash($pass, PASSWORD_BCRYPT, $options);
-
-    $sql = "INSERT INTO `users`(`emp_no`, `name`, `password`, `user_name`) 
-    VALUES ('$empno','$name','$pass','$name')";
+    $pos=$_POST['pos'];
+    $sql = $conn->query("SELECT `top`, `front`, `back`, `side1`, `side2`, `curve` FROM `position` WHERE `pos_name`='$pos'");
     $array=array();
-    if ($conn->query($sql) === TRUE) {
+    while ($row = $sql->fetch_assoc()) {            
         $array = array(
-            'value' => '1',
-            'message' => 'Account created',
+            'top' => $row['top'],
+            'front' => $row['front'],
+            'back' => $row['back'],
+            'side1' => $row['side1'],
+            'side2' => $row['side2'],
+            'curve' => $row['curve'],
         );
-        $conn->close();
-    } else {
-        $array = array(
-            'value' => '0',
-            'message' => ''. $conn->errno,
-        );
-        $conn->close();
     }
-
     die(json_encode($array));
-    
-
-
 }
 
     

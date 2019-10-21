@@ -81,7 +81,7 @@
     <div class="form-group">
       <label class="control-label col-sm-3" for="dwidth">Width:</label>
       <div class="col-sm-8">
-        <input type="text" class="form-control" id="dwidth" placeholder="Enter Width" name="dwidth">
+        <input type="text" class="form-control" id="dwidth" placeholder="Enter Width" name="dwidth" onkeyup="wfaccal()">
       </div>
     </div>
     <div class="form-group">
@@ -126,6 +126,8 @@
     </div>
 
   </form>
+  <button type="button" class="btn btn-primary btn-lg" onclick="calcutaion()">Send</button>
+  <button type="button" class="btn btn-outline-danger">Danger</button>
 </div> <!------Left side div ends here--------->
 
 
@@ -248,8 +250,8 @@ $(function(){ //Hide all the divs on start
 });
 
 // Position Type change according Enclosure Type
-let prices = {"Free standing panel":[{value:"separated",desc:"separated"},{value:"wall attached",desc:"wall attached"}],
-              "Free standing cubicle":[{value:"First / Last Separated",desc:"First / Last Separated"},{value:"First / Last Wall Attached",desc:"First / Last Wall Attached"},{value:"Central Separated",desc:"Central Separated"},{value:"Central Wall Attached",desc:"Central Wall Attached"}],
+let prices = {"Free standing panel":[{value:"Seperated",desc:"seperated"},{value:"Wall attached",desc:"Wall attached"}],
+              "Free standing cubicle":[{value:"First / Last Separated",desc:"First / Last Separated"},{value:"First / Last Wall Attached",desc:"First / Last Wall Attached"},{value:"Central Seperated",desc:"Central Seperated"},{value:"Central Wall Attached",desc:"Central Wall Attached"}],
               "Wall Mounted":[{value:"Surface Mounted",desc:"Surface Mounted"},{value:"Flush Mounted",desc:"Flush Mounted"}]}
 
   document.getElementsByName('etype')[0].addEventListener('change', function(e) {
@@ -286,64 +288,39 @@ function myFunction(one,two,three) { // Div selection to hide
   
 } 
 
-function calcutaion(){  //A0 Calculation
+function calcutaion(){  //Ae Calculation
 
-  var height = document.getElementById('dheight');
-  var width = document.getElementById('dwidth');
-  var depth = document.getElementById('ddepth');
+  var position = document.getElementById('pos').value;
 
-  int wfac;
-
-  var top=((width/dfac)*depth)/(1000*1000); //top
-  var frbk=((width/dfac)*height)/(1000*1000); //front and back
-  var lfrh=depth/height; //left and right
-
- //(width % 1500); this to get when size is less than 1500 width
-   // Math.floor(width/1500);  // this plus modulus make separation 2 width
-
-  function wfaccal{
-    if(width<=1500){
-      wfac=(width%1500);
-    }
-    else{
-      var x=(width%1500);
-      var y=math.floor(width/1500);
-      wfac=x+y;
-    }
-  }
-  
-
-    
-
-  
+  // here comes dimension calculation
 
   $.ajax({
           type: 'POST',
-          url: 'ajax.php',
+          url: 'cal.php',
           data:
           {
-            busdrop_option: val
+            pos: position
           },
           dataType:'json',
-          success: function drop (response) {
-            $('#200303p').val(response['30k3p']);
-            $('#200303pn').val(response['30k3p+n']);
-            $('#200703p').val(response['70k3p']);
-            $('#200703pn').val(response['70k3p+n']);
-            $('#200cu').val(response['200cu']);
-            $('#1000303p').val(response['100030k3p']);
-            $('#1000303pn').val(response['100030k3p+n']);
-            $('#1000703p').val(response['100070k3p']);
-            $('#1000703pn').val(response['100070k3p+n']);
+          success: function calcutaion (response) {
+            alert(response['top']);
           }
         });
 
 
 }
 
-
-
-
+function wfaccal(){ //width factor calculation
+  var width = parseInt(document.getElementById('dwidth').value);
+  if(width>1500){
+    var wfac=1+Math.floor(width/1500);
+    document.getElementById('wFactor').value=wfac;
+  }
+  else{
+    document.getElementById('wFactor').value=1;
+  }
+}
+  
 </script>
 
 
