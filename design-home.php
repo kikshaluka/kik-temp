@@ -136,7 +136,7 @@
   <div class="form-group">
     <label class="control-label col-sm-3" for="width Factor">Width Factor:</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" id="width Factor" placeholder="Width Factor" name="width Factor">
+      <input type="text" class="form-control" id="wFactor" placeholder="Width Factor" name="width Factor">
     </div>
     </div> 
 
@@ -291,14 +291,27 @@ function calcutaion(){  //A0 Calculation
   var height = document.getElementById('dheight');
   var width = document.getElementById('dwidth');
   var depth = document.getElementById('ddepth');
-  var dfac = document.getElementById('width Factor');
+
+  int wfac;
 
   var top=((width/dfac)*depth)/(1000*1000); //top
   var frbk=((width/dfac)*height)/(1000*1000); //front and back
   var lfrh=depth/height; //left and right
 
-    var x = (2200 % 1500); // this to get when size is less than 1500 width
-    var y = Math.floor(2200/1500);  // this plus modulus make separation 2 width
+ //(width % 1500); this to get when size is less than 1500 width
+   // Math.floor(width/1500);  // this plus modulus make separation 2 width
+
+  function wfaccal{
+    if(width<=1500){
+      wfac=(width%1500);
+    }
+    else{
+      var x=(width%1500);
+      var y=math.floor(width/1500);
+      wfac=x+y;
+    }
+  }
+  
 
     
 
