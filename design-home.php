@@ -247,6 +247,7 @@ $(function(){ //Hide all the divs on start
     $("#natural").hide();
     $("#forced").hide();
     $("#air").hide();
+    $("#larea").prop('disabled', true);
 });
 
 // Position Type change according Enclosure Type
@@ -266,7 +267,9 @@ function myFunction(one,two,three) { // Div selection to hide
   if (x.style.display === "none" ) {
     y.style.display = "none";
     z.style.display = "none";
-    x.style.display = "block";  
+    x.style.display = "block";
+    if(x)
+
   }} 
 
 
@@ -291,35 +294,44 @@ function myFunction(one,two,three) { // Div selection to hide
 function calcutaion(){  //Ae Calculation
 
   var position = document.getElementById('pos').value;
+  var height = document.getElementById('dheight').value;
+  var width = document.getElementById('dwidth').value;
+  var depth = document.getElementById('ddepth').value;
+  var wFactor = document.getElementById('wFactor').value;
 
+  if(position=="0"||height==""||width==""||depth==""){
+    alert("Height, width, depth need to be filled");
+  }
+  else{
   // here comes dimension calculation
-
+  var top =((width/wFactor)*depth)/(1000*1000);
+  var bnf = ((width/wFactor)*height)/(1000*1000);
+  var sides = (depth*height) / (1000*1000);
   $.ajax({
           type: 'POST',
           url: 'cal.php',
           data:
           {
-            pos: position
+            pos: position,
+            top: top,
+            bknfr: bnf,
+            lfnrg: sides
           },
           dataType:'json',
           success: function calcutaion (response) {
-            alert(response['top']);
+            document.getElementById('Ae').value = response['Ae'].toFixed(3);
           }
         });
 
-
+  }
 }
 
 function wfaccal(){ //width factor calculation
   var width = parseInt(document.getElementById('dwidth').value);
-  if(width>1500){
-    var wfac=1+Math.floor(width/1500);
+  var wfac=Math.floor(width/1500);
+  if((width%1500)>0){wfac+=1;}
     document.getElementById('wFactor').value=wfac;
   }
-  else{
-    document.getElementById('wFactor').value=1;
-  }
-}
   
 </script>
 
