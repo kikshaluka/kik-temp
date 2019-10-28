@@ -1,6 +1,6 @@
 <?php
 
-
+include_once('conn.php');
 
 ?>
 <!DOCTYPE html>
@@ -35,7 +35,7 @@
     <div class="form-group row">
     <label class="control-label col-sm-3" for="larea">Louver Area:</label>
       <div class="col-sm-3">
-        <input type="text" class="form-control" id="larea" placeholder="Louver Area" name="email">
+        <input type="text" class="form-control" id="larea" placeholder="Louver Area" name="email" value='0'>
       </div>
     <label class="control-label col-sm-2" for="loc">Location:</label>
       <div class="col-sm-3">
@@ -47,7 +47,7 @@
       <label class="control-label col-sm-3" for="etype">Enclosure Type:</label>
       <div class="col-sm-5">
         <select class="form-control" id="etype" name="etype">
-            <option value="0">0</option>
+            <option value="0">-- Select Value --</option>
             <option value="Free standing panel">Free standing panel</option>
             <option value="Free standing cubicle">Free standing cubicle</option>
             <option value="Wall Mounted">Wall Mounted</option>
@@ -102,7 +102,19 @@
       </div>
     </div>
 
-    <div class="form-group">
+  </form>
+  <button type="button" class="btn btn-primary btn-lg" onclick="calcutaion()">Send</button>
+  <button type="button" class="btn btn-outline-danger">Danger</button>
+</div> <!------Left side div ends here--------->
+
+
+  <!---------Right side div starts here--->
+  <div class="col-lg-6">
+  <form class="form-horizontal">
+
+  <div class="form-group">
+
+  <div class="form-group">
     <label class="control-label col-sm-4" for="atemp">Ambient Temperature:</label>
     <div class="col-sm-3">
       <input type="text" class="form-control" id="atemp" placeholder="Ambient Temperature" name="atemp">
@@ -125,17 +137,6 @@
     </div>
     </div>
 
-  </form>
-  <button type="button" class="btn btn-primary btn-lg" onclick="calcutaion()">Send</button>
-  <button type="button" class="btn btn-outline-danger">Danger</button>
-</div> <!------Left side div ends here--------->
-
-
-  <!---------Right side div starts here--->
-  <div class="col-lg-6">
-  <form class="form-horizontal">
-
-  <div class="form-group">
     <label class="control-label col-sm-3" for="width Factor">Width Factor:</label>
     <div class="col-sm-3">
       <input type="text" class="form-control" id="wFactor" placeholder="Width Factor" name="width Factor">
@@ -237,6 +238,201 @@
 </div>  
 
   </div>
+
+  <!--bottom div-->
+  <div class="col-lg-12">
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Bus bar</th>
+      <th scope="col">Description</th>
+      <th scope="col">Material</th>
+      <th scope="col">Width</th>
+      <th scope="col">Thinckness</th>
+      <th scope="col">Runs</th>
+      <th scope="col">Length</th>
+      <th scope="col">Current</th>
+      <th scope="col">Power Loss</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Bus bar</td>
+      <td>
+        <select class="form-control" id="etype" name="etype">
+              <option value="0">-- Select Value --</option>
+              <option value="Al">Al</option>
+              <option value="Cu">Cu</option>
+
+          </select>        
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="Width" name="dwidth">
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="Thickness" name="dwidth">
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="Runs" name="dwidth">
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="Length" name="dwidth">
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="current" name="dwidth">
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="Power Loss" name="dwidth" disabled>
+      </td>
+      <td>
+        <button type="button" class="btn btn-warning">Add</button>
+      </td>
+      
+
+    </tr>
+  </tbody>
+</table>
+
+<!-- power cables-->
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Cables</th>
+      <th scope="col">Description</th>
+      <th scope="col">Material</th>
+      <th scope="col">Type</th>
+      <th scope="col">Size(mm<sup>2</sup>)</th>
+      <th scope="col">Runs</th>
+      <th scope="col">Length</th>
+      <th scope="col">Current</th>
+      <th scope="col">Power Loss</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>power cables</td>
+      <td>
+        <select class="form-control" id="etype" name="etype">
+              <option value="0">-- Select Value --</option>
+              <option value="Al">Al</option>
+              <option value="Cu">Cu</option>
+
+          </select>        
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="Width" name="dwidth">
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="Thickness" name="dwidth">
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="Runs" name="dwidth">
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="Length" name="dwidth">
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="current" name="dwidth">
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="Power Loss" name="dwidth" disabled>
+      </td>
+      <td>
+        <button type="button" class="btn btn-warning">Add</button>
+      </td>
+      
+
+    </tr>
+  </tbody>
+</table>
+
+
+<!--power cables ends here-->
+
+<!--switch gear-->
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Gears</th>
+      <th scope="col">Description</th>
+      <th scope="col">Manufacturer</th>
+      <th scope="col">Type</th>
+      <th scope="col">Range</th>
+      <th scope="col">Model</th>
+      <th scope="col">Qty</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Power Loss</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Switch gear</td>
+      <td>
+        <select class="form-control" id="etype" name="etype">
+        <?php
+            $stmt = $conn->query("SELECT DISTINCT g_mnf FROM gears ORDER BY g_mnf ASC");
+              while ($row = $stmt->fetch_assoc()):
+                    $rc = $row['g_mnf'];?>
+                    <option value="<?php echo $rc?>" ><?php echo $rc?></option>
+              <?php endwhile;?>
+
+          </select>        
+      </td>
+      <td>
+      <select class="form-control" id="etype" name="etype">
+        <?php
+            $stmt = $conn->query("SELECT DISTINCT g_mnf FROM gears ORDER BY g_mnf ASC");
+              while ($row = $stmt->fetch_assoc()):
+                    $rc = $row['g_mnf'];?>
+                    <option value="<?php echo $rc?>" ><?php echo $rc?></option>
+              <?php endwhile;?>
+
+          </select> 
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="Thickness" name="dwidth">
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="Runs" name="dwidth">
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="Length" name="dwidth">
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="current" name="dwidth">
+      </td>
+      <td>
+        <input type="text" class="form-control" id="PlossWidth" placeholder="Power Loss" name="dwidth" disabled>
+      </td>
+      <td>
+        <button type="button" class="btn btn-warning">Add</button>
+      </td>
+      
+
+    </tr>
+  </tbody>
+</table>
+
+<!--switch gear ends-->
+
+
+
+  <button type="button" class="btn btn-primary btn-lg" onclick="calcutaion()">Send</button>
+  <button type="button" class="btn btn-outline-danger">Danger</button>
+</div>
+  <!--ends here-->
+
+
+
 </div>
 </body>
 
@@ -323,7 +519,7 @@ function calcutaion(){  //Ae Calculation
           },
           dataType:'json',
           success: function calcutaion (response) {
-            document.getElementById('Ae').value = response['Ae'].toFixed(3);
+            document.getElementById('Ae').value = response['Ae'].toFixed(2);
           }
         });
 
