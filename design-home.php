@@ -264,12 +264,16 @@ function myFunction(one,two,three) { // Div selection to hide
   var x = document.getElementById(one);
   var y = document.getElementById(two);
   var z = document.getElementById(three);
-  if (x.style.display === "none" ) {
+   if (x.style.display === "none" ) {
+    if(one=='natural'){
+      $("#larea").prop('disabled', false);
+    }
+    else{
+      $("#larea").prop('disabled', true);
+    }
     y.style.display = "none";
     z.style.display = "none";
     x.style.display = "block";
-    if(x)
-
   }} 
 
 
