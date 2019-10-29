@@ -13,7 +13,7 @@ include_once('conn.php');
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body onload="startup()">
 
 <div class="container">
   <h3>Heat Tempreture Rise Calculator</h3>
@@ -377,32 +377,25 @@ include_once('conn.php');
       <th scope="row">1</th>
       <td>Switch gear</td>
       <td>
-        <select class="form-control" id="etype" name="etype">
-        <?php
-            $stmt = $conn->query("SELECT DISTINCT g_mnf FROM gears ORDER BY g_mnf ASC");
-              while ($row = $stmt->fetch_assoc()):
-                    $rc = $row['g_mnf'];?>
-                    <option value="<?php echo $rc?>" ><?php echo $rc?></option>
-              <?php endwhile;?>
+        <select class="form-control" id="gmnf" name="gmnf" onchange='gtype_load(this.value)'>
+        <option value="">-- select one -- </option>
 
           </select>        
       </td>
       <td>
-      <select class="form-control" id="etype" name="etype">
-        <?php
-            $stmt = $conn->query("SELECT DISTINCT g_mnf FROM gears ORDER BY g_mnf ASC");
-              while ($row = $stmt->fetch_assoc()):
-                    $rc = $row['g_mnf'];?>
-                    <option value="<?php echo $rc?>" ><?php echo $rc?></option>
-              <?php endwhile;?>
-
-          </select> 
+      <select class="form-control" id="gtype" name="gtype" onchange='grange_load(this.value)'>
+        <option value="">-- select one -- </option>
+      </select> 
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="Thickness" name="dwidth">
+      <select class="form-control" id="grange" name="grange" onchange='gmodel_load(this.value)'>
+        <option value="">-- select one -- </option>
+      </select> 
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="Runs" name="dwidth">
+      <select class="form-control" id="gmodel" name="gmodel" >
+        <option value="">-- select one -- </option>
+      </select> 
       </td>
       <td>
         <input type="text" class="form-control" id="PlossWidth" placeholder="Length" name="dwidth">
@@ -533,6 +526,104 @@ function wfaccal(){ //width factor calculation
     document.getElementById('wFactor').value=wfac;
   }
   
+
+  function gtype_load(val){ // switch gear type drop down depend on mnf
+    document.getElementById("gtype").options.length = 0;
+    document.getElementById("grange").options.length = 0;
+    document.getElementById("gmodel").options.length = 0;
+    $.ajax({
+          type: 'POST',
+          url: 'cal-data.php',
+          data:
+          {
+            gtype: val
+            },
+          dataType:'json',
+          success: function gtype_load (response) {
+            $("#gtype").append(new Option('--select option--', '0'));
+            for (i = 0; i < response.length; i++) {
+             $("#gtype").append(new Option(response[i], response[i]));
+
+          }
+            
+          }
+        });
+}
+
+function startup(){ //page onload functions are included here.
+  gmnf_load();
+}
+
+function gmnf_load(){ //gear manufacturers load
+  $.ajax({
+          type: 'POST',
+          url: 'cal-data.php',
+          data:
+          {
+            gmnf: "ok"
+            },
+          dataType:'json',
+          success: function gmnf_load (response) {
+            for (i = 0; i < response.length; i++) {
+             $("#gmnf").append(new Option(response[i], response[i]));
+
+          }
+            
+          }
+        });
+}
+
+function grange_load(val){ //gear range loader
+  document.getElementById("grange").options.length = 0;
+  document.getElementById("gmodel").options.length = 0;
+  var gmnf = document.getElementById("gmnf").value;
+
+  $.ajax({
+          type: 'POST',
+          url: 'cal-data.php',
+          data:
+          {
+            typeg: val,
+            mnfg: gmnf
+
+            },
+          dataType:'json',
+          success: function grange_load (response) {
+            $("#grange").append(new Option('--select option--', '0'));
+            for (i = 0; i < response.length; i++) {
+             $("#grange").append(new Option(response[i], response[i]));
+
+          }
+            
+          }
+        });
+}
+
+function gmodel_load(val){ //gear range loader
+  document.getElementById("gmodel").options.length = 0;
+  var mnfg = document.getElementById("gmnf").value;
+  var typeg = document.getElementById("gtype").value;
+
+  $.ajax({
+          type: 'POST',
+          url: 'cal-data.php',
+          data:
+          {
+            typg: typeg,
+            mnfg: mnfg,
+            rang: val
+            },
+          dataType:'json',
+          success: function gmodel_load (response) {
+            $("#gmodel").append(new Option('--select option--', '0'));
+            for (i = 0; i < response.length; i++) {
+             $("#gmodel").append(new Option(response[i], response[i]));
+
+          }
+            
+          }
+        });
+}
 </script>
 
 

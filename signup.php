@@ -129,15 +129,15 @@ function successAlert(msg,duration) // generate a success message
 
 function usrsignup(){
     alert('ok');
-    var mail=document.getElementById("usremail").value;
-    var name=document.getElementById("usrname").value;
-    var pass=document.getElementById("usrpass").value;
+    var mail = document.getElementById("usremail").value;
+    var name = document.getElementById("usrname").value;
+    var pass = document.getElementById("usrpass").value;
 
     $.ajax({
           type: 'POST',
           url: 'signup-ajax.php',
           data:
-          {
+            {
             sign_up: 'yes',
             uname:name,
             umail:mail,
