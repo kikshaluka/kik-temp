@@ -393,18 +393,18 @@ include_once('conn.php');
       </select> 
       </td>
       <td>
-      <select class="form-control" id="gmodel" name="gmodel" >
+      <select class="form-control" id="gmodel" name="gmodel" onchange='grate_view()' >
         <option value="">-- select one -- </option>
       </select> 
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="Length" name="dwidth">
+        <input type="text" class="form-control" id="g_qty" placeholder="Length" name="dwidth" onkeyup='pwrloss(this.value)'>
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="current" name="dwidth">
+        <input type="text" class="form-control" placeholder="current"  name="g_power" id='g_power' disabled>
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="Power Loss" name="dwidth" disabled>
+        <input type="text" class="form-control" placeholder="Power Loss" id="pwrloss" disabled>
       </td>
       <td>
         <button type="button" class="btn btn-warning">Add</button>
@@ -416,16 +416,8 @@ include_once('conn.php');
 </table>
 
 <!--switch gear ends-->
-
-
-
-  <button type="button" class="btn btn-primary btn-lg" onclick="calcutaion()">Send</button>
-  <button type="button" class="btn btn-outline-danger">Danger</button>
 </div>
   <!--ends here-->
-
-
-
 </div>
 </body>
 
@@ -555,6 +547,9 @@ function startup(){ //page onload functions are included here.
 }
 
 function gmnf_load(){ //gear manufacturers load
+  document.getElementById("pwrloss").value="";
+  document.getElementById("g_qty").value="";
+  document.getElementById("g_power").value="";
   $.ajax({
           type: 'POST',
           url: 'cal-data.php',
@@ -577,6 +572,9 @@ function grange_load(val){ //gear range loader
   document.getElementById("grange").options.length = 0;
   document.getElementById("gmodel").options.length = 0;
   var gmnf = document.getElementById("gmnf").value;
+  document.getElementById("pwrloss").value="";
+  document.getElementById("g_qty").value="";
+  document.getElementById("g_power").value="";
 
   $.ajax({
           type: 'POST',
@@ -603,6 +601,9 @@ function gmodel_load(val){ //gear range loader
   document.getElementById("gmodel").options.length = 0;
   var mnfg = document.getElementById("gmnf").value;
   var typeg = document.getElementById("gtype").value;
+  document.getElementById("pwrloss").value="";
+  document.getElementById("g_qty").value="";
+  document.getElementById("g_power").value="";
 
   $.ajax({
           type: 'POST',
@@ -624,6 +625,65 @@ function gmodel_load(val){ //gear range loader
           }
         });
 }
+
+
+function grate_view(){ //gear current rate view
+  var mnfg = document.getElementById("gmnf").value;
+  var typeg = document.getElementById("gtype").value;
+  var rangeg = document.getElementById("grange").value;
+  var modelg = document.getElementById("gmodel").value;
+  document.getElementById("pwrloss").value="";
+  document.getElementById("g_qty").value="";
+  document.getElementById("g_power").value="";
+
+
+  $.ajax({
+          type: 'POST',
+          url: 'cal-data.php',
+          data:
+          {
+            typg: typeg,
+            mnfg: mnfg,
+            rag: rangeg,
+            rateg:"ok",
+            modelg:modelg
+            },
+          dataType:'json',
+          success: function grate_view (response) {
+            //alert(response["power"]);
+            document.getElementById("g_power").value=response["g_ratedi"];
+            
+          }
+        });
+
+}
+
+function pwrloss(val){ //power loss calculation 
+  var mnfg = document.getElementById("gmnf").value;
+  var typeg = document.getElementById("gtype").value;
+  var rangeg = document.getElementById("grange").value;
+  var modelg = document.getElementById("gmodel").value;
+  $.ajax({
+          type: 'POST',
+          url: 'cal-data.php',
+          data:
+          {
+            pwr: val,
+            typg: typeg,
+            mnfg: mnfg,
+            rag: rangeg,
+            modelg: modelg
+            },
+          dataType:'json',
+          success: function pwrloss (response) {
+            document.getElementById("pwrloss").value=response["p_loss"];
+            
+          }
+        });
+}
+
+
+
 </script>
 
 
