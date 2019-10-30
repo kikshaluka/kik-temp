@@ -96,4 +96,50 @@ if (isset($_POST['pwr'])){ // power loss
     die(json_encode($array));
 }
 
+if (isset($_POST['c_mat'])){ // cable manufacturer
+
+    $sql = $conn->query("SELECT DISTINCT mat FROM cables");
+    $array=array();
+    while ($row = $sql->fetch_assoc()) {            
+        array_push($array,$row['mat']);
+    }
+    die(json_encode($array));
+}
+
+if (isset($_POST['pc_type'])){ // cable type selecters
+
+    $mnf = $_POST['pc_type'];
+    $sql = $conn->query("SELECT DISTINCT cable_type FROM cables where mat = '$mnf'");
+    $array=array();
+    while ($row = $sql->fetch_assoc()) {            
+        array_push($array,$row['cable_type']);
+    }
+    die(json_encode($array));
+}
+
+if (isset($_POST['pc_cal'])){ // power cable calculation
+
+    $cmnf = $_POST['mat']; //power cable manufacturer
+    $ctype = $_POST['ptype']; // power cable type
+
+    $pc_size = $_POST['size']; //power cable size
+    $pc_runs = $_POST['runs']; // power cable runs
+    $pc_length = $_POST['len']; // power cable length
+    $pc_curr = $_POST['curr']; // power cable current
+
+    $sql = $conn->query("SELECT resistance FROM cables where mat = '$cmnf' and cable_type = '$ctype'");
+    $array=array();
+    while ($row = $sql->fetch_assoc()) {
+        $res=$row['resistance'];   
+        $sum = (($res/1000)* $pc_length/$pc_size) * pow(2,$pc_curr) * $pc_runs;
+        $array = array(
+            
+            'sum' => $sum
+        );
+    }
+    die(json_encode($array));
+}
+
+
+
 ?>

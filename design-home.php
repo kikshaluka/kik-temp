@@ -264,7 +264,7 @@ include_once('conn.php');
         <select class="form-control" id="etype" name="etype">
               <option value="0">-- Select Value --</option>
               <option value="Al">Al</option>
-              <option value="Cu">Cu</option>
+              <option value="Cu">Copper</option>
 
           </select>        
       </td>
@@ -318,30 +318,29 @@ include_once('conn.php');
       <th scope="row">1</th>
       <td>power cables</td>
       <td>
-        <select class="form-control" id="etype" name="etype">
+        <select class="form-control" id="pc_mat" name="pc_mat" onchange="pctype_load(this.value)">
               <option value="0">-- Select Value --</option>
-              <option value="Al">Al</option>
-              <option value="Cu">Cu</option>
-
           </select>        
       </td>
       <td>
-        <input type="text" class="form-control" id="c_width" placeholder="Width" name="c_width">
+      <select class="form-control" id="pc_type" name="pc_type">
+              <option value="0">-- Select Value --</option>
+          </select>
       </td>
       <td>
-        <input type="text" class="form-control" id="c_thickness" placeholder="Thickness" name="c_thickness">
+        <input type="text" class="form-control" id="pc_size" placeholder="Thickness" name="pc_size" onkeyup='pcable_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="c_runs" placeholder="Runs" name="c_runs">
+        <input type="text" class="form-control" id="pc_runs" placeholder="Runs" name="pc_runs" onkeyup='pcable_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="c_length" placeholder="Length" name="c_length">
+        <input type="text" class="form-control" id="pc_length" placeholder="Length" name="pc_length" onkeyup='pcable_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="c_current" placeholder="current" name="c_current">
+        <input type="text" class="form-control" id="pc_current" placeholder="current" name="pc_current" onkeyup='pcable_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="c_ploss" placeholder="Power Loss" name="c_ploss" disabled>
+        <input type="text" class="form-control" id="pc_ploss" placeholder="Power Loss" name="pc_ploss" disabled>
       </td>
       <td>
         <button type="button" class="btn btn-warning">Add</button>
@@ -543,10 +542,11 @@ function wfaccal(){ //width factor calculation
 }
 
 function startup(){ //page onload functions are included here.
-  gmnf_load();
+  gmnf_load(); //switch gear manufacturer loader
+  pcmaterial_load(); //power cable material loader
 }
 
-function gmnf_load(){ //gear manufacturers load
+function gmnf_load(){ //gear manufacturers load - startup
   document.getElementById("pwrloss").value="";
   document.getElementById("g_qty").value="";
   document.getElementById("g_power").value="";
@@ -680,6 +680,102 @@ function pwrloss(val){ //power loss calculation
             
           }
         });
+}
+
+function pcmaterial_load(){ // cable material loader - startup
+
+  var pc_size = document.getElementById("pc_size").value = '';
+  var pc_runs = document.getElementById("pc_runs").value = '';
+  var pc_length = document.getElementById("pc_length").value = '';
+  var pc_current = document.getElementById("pc_current").value = '';
+  var pc_ploss = document.getElementById("pc_ploss").value = '';
+  $.ajax({
+          type: 'POST',
+          url: 'cal-data.php',
+          data:
+          {
+            c_mat: "ok"
+            },
+          dataType:'json',
+          success: function pcmaterial_load (response) {
+            for (i = 0; i < response.length; i++) {
+             $("#pc_mat").append(new Option(response[i], response[i]));
+          
+          }
+            
+          }
+        });
+}
+
+function pctype_load(val){ // power cable types loader
+
+document.getElementById("pc_type").options.length = 0;
+var pc_size = document.getElementById("pc_size").value = '';
+var pc_runs = document.getElementById("pc_runs").value = '';
+var pc_length = document.getElementById("pc_length").value = '';
+var pc_current = document.getElementById("pc_current").value = '';
+var pc_ploss = document.getElementById("pc_ploss").value = '';
+$.ajax({
+        type: 'POST',
+        url: 'cal-data.php', 
+        data:
+        {
+          pc_type: val
+        },
+        dataType:'json',
+        success: function pctype_load (response) {
+          $("#pc_type").append(new Option('--select option--', '0'));
+          for (i = 0; i < response.length; i++) {
+            $("#pc_type").append(new Option(response[i], response[i]));
+        
+        }
+          
+        }
+      });
+}
+
+function pcable_cal(){ // power cable resistance calculator
+
+  var pc_mat = document.getElementById("pc_mat").value;
+  var pc_type = document.getElementById("pc_type").value;
+  var pc_size = document.getElementById("pc_size").value;
+  var pc_runs = document.getElementById("pc_runs").value;
+  var pc_length = document.getElementById("pc_length").value;
+  var pc_current = document.getElementById("pc_current").value;
+  
+
+  if(pc_size==''||pc_runs==''||pc_length==''||pc_current==''){
+    pc_size = 0;
+    pc_runs = 0;
+    pc_length = 0;
+    pc_current = 0;
+  }
+
+  $.ajax({
+          type: 'POST',
+          url: 'cal-data.php',
+          data:
+          {
+            pc_cal: 'ok',
+            mat: pc_mat, // power cable material
+            ptype: pc_type, // power cable type
+            size: pc_size,
+            runs: pc_runs,
+            len: pc_length,
+            curr: pc_current
+            
+          },
+          dataType:'json',
+          success: function pcable_cal (response) { 
+            document.getElementById("pc_ploss").value=response["sum"];
+                     
+          }
+        });
+
+
+
+
+
 }
 
 
