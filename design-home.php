@@ -326,22 +326,22 @@ include_once('conn.php');
           </select>        
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="Width" name="dwidth">
+        <input type="text" class="form-control" id="c_width" placeholder="Width" name="c_width">
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="Thickness" name="dwidth">
+        <input type="text" class="form-control" id="c_thickness" placeholder="Thickness" name="c_thickness">
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="Runs" name="dwidth">
+        <input type="text" class="form-control" id="c_runs" placeholder="Runs" name="c_runs">
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="Length" name="dwidth">
+        <input type="text" class="form-control" id="c_length" placeholder="Length" name="c_length">
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="current" name="dwidth">
+        <input type="text" class="form-control" id="c_current" placeholder="current" name="c_current">
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="Power Loss" name="dwidth" disabled>
+        <input type="text" class="form-control" id="c_ploss" placeholder="Power Loss" name="c_ploss" disabled>
       </td>
       <td>
         <button type="button" class="btn btn-warning">Add</button>
