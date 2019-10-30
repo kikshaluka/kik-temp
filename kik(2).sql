@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2019 at 01:05 PM
+-- Generation Time: Oct 30, 2019 at 01:00 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -86,6 +86,28 @@ INSERT INTO `busbars` (`uid`, `rated_current`, `busbar_size`, `30k3p`, `30k3p+n`
 (21, 7100, '4-10x200\r\n', 76.0100, 88.6800, 84.6600, 98.7800, 42.7700, 402.6000, 469.7000, 447.5000, 522.1000, 0.0000),
 (22, 3200, '3-10x100\r\n', 40.2600, 46.9700, 44.7500, 52.2100, 16.0400, 380.0500, 443.4000, 423.3000, 493.9000, 0.0000),
 (23, 0, '---select value--', 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cables`
+--
+
+CREATE TABLE `cables` (
+  `c_id` int(10) NOT NULL,
+  `brand_name` varchar(30) NOT NULL COMMENT 'cable brand name',
+  `cable_type` varchar(30) NOT NULL COMMENT 'cable type (PVC)',
+  `mat` varchar(20) NOT NULL COMMENT 'cable material (Cu/Al)',
+  `resistance` decimal(11,4) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `cables`
+--
+
+INSERT INTO `cables` (`c_id`, `brand_name`, `cable_type`, `mat`, `resistance`) VALUES
+(1, 'main', 'PVC', 'Al', '35.8000'),
+(2, 'main', 'PVC', 'Cu', '22.5000');
 
 -- --------------------------------------------------------
 
@@ -193,6 +215,12 @@ ALTER TABLE `busbars`
   ADD PRIMARY KEY (`uid`);
 
 --
+-- Indexes for table `cables`
+--
+ALTER TABLE `cables`
+  ADD PRIMARY KEY (`c_id`);
+
+--
 -- Indexes for table `cus_users`
 --
 ALTER TABLE `cus_users`
@@ -226,6 +254,12 @@ ALTER TABLE `breakers`
 --
 ALTER TABLE `busbars`
   MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'unique_id', AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT for table `cables`
+--
+ALTER TABLE `cables`
+  MODIFY `c_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `cus_users`
