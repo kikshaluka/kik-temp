@@ -121,7 +121,6 @@ if (isset($_POST['pc_cal'])){ // power cable calculation
 
     $cmnf = $_POST['mat']; //power cable manufacturer
     $ctype = $_POST['ptype']; // power cable type
-
     $pc_size = $_POST['size']; //power cable size
     $pc_runs = $_POST['runs']; // power cable runs
     $pc_length = $_POST['len']; // power cable length
@@ -131,10 +130,10 @@ if (isset($_POST['pc_cal'])){ // power cable calculation
     $array=array();
     while ($row = $sql->fetch_assoc()) {
         $res=$row['resistance'];   
-        $sum = (($res/1000)* $pc_length/$pc_size) * pow(2,$pc_curr) * $pc_runs;
+        $sum = (($res/1000)* $pc_length/$pc_size) * pow($pc_curr,2) * $pc_runs;
         $array = array(
             
-            'sum' => $sum
+            'sum' => $sum,
         );
     }
     die(json_encode($array));

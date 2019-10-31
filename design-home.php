@@ -744,7 +744,7 @@ function pcable_cal(){ // power cable resistance calculator
   var pc_current = document.getElementById("pc_current").value;
   
 
-  if(pc_size==''||pc_runs==''||pc_length==''||pc_current==''){
+  if(pc_size==''&&pc_runs==''&&pc_length==''&&pc_current==''){
     pc_size = 0;
     pc_runs = 0;
     pc_length = 0;
@@ -771,11 +771,6 @@ function pcable_cal(){ // power cable resistance calculator
                      
           }
         });
-
-
-
-
-
 }
 
 
