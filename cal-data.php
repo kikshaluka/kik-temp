@@ -139,6 +139,40 @@ if (isset($_POST['pc_cal'])){ // power cable calculation
     die(json_encode($array));
 }
 
+if (isset($_POST['bb_cal'])){ // bus bar calculation
 
+    $bmat = $_POST['bmat']; // bus bar manufacturer
+    $bwid = $_POST['bwid']; // bus bar width
+    $bthk = $_POST['bthk']; // bus bar thickness
+    $brun = $_POST['brun']; // bus bar runs
+    $blen = $_POST['blen']; // bus bar length
+    $bcurr = $_POST['bcurr']; // bus bar current
+
+
+
+    $array=array();
+
+
+    switch ($bmat) {
+        case "Al":
+            $res = 31.61;
+            break;
+        case "Cu":
+            $res = 20.90;
+            break;
+        case "TinCu":
+            $res = 0;
+            break;
+        default:
+            $res = 0;
+    }
+        
+        $sum = (($res/1000)*$blen)/($bwid*$bthk*$brun)*pow($bcurr,2);
+        $array = array(
+            
+            'sum' => $sum,
+        );
+    die(json_encode($array));
+}
 
 ?>

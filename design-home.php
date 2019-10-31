@@ -39,7 +39,18 @@ include_once('conn.php');
       </div>
     <label class="control-label col-sm-2" for="loc">Location:</label>
       <div class="col-sm-3">
-        <input type="text" class="form-control" id="loc" placeholder="Location" name="loc">
+      <select class="form-control" id="loc" name="loc">
+            <option value="0">-- Select Value --</option>
+            <option value="0">0</option>
+            <option value="500">500</option>
+            <option value="1000">1000</option>
+            <option value="1500">1500</option>
+            <option value="2000">2000</option>
+            <option value="2500">2500</option>
+            <option value="3000">3000</option>
+            <option value="3500">3500</option>
+            
+        </select>
       </div>
   </div>
 
@@ -98,13 +109,16 @@ include_once('conn.php');
     <div class="form-group">
       <label class="control-label col-sm-4" for="hseparation">Horiszontal Separation:</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control" id="hseparation" placeholder="Horizontal Separation" name="email">
+      <select class="form-control" id="hseparation" name="hseparation">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>            
+        </select>
       </div>
     </div>
 
   </form>
-  <button type="button" class="btn btn-primary btn-lg" onclick="calcutaion()">Send</button>
-  <button type="button" class="btn btn-outline-danger">Danger</button>
 </div> <!------Left side div ends here--------->
 
 
@@ -117,14 +131,14 @@ include_once('conn.php');
   <div class="form-group">
     <label class="control-label col-sm-4" for="atemp">Ambient Temperature:</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" id="atemp" placeholder="Ambient Temperature" name="atemp">
+      <input type="text" class="form-control" id="atemp" placeholder="Ambient Temperature" name="atemp" value="35">
     </div>
     </div> 
 
     <div class="form-group">
     <label class="control-label col-sm-3" for="Dfactor">Demand Factor:</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="Dfactor" placeholder="Demand Factor" name="Dfactor">
+      <input type="text" class="form-control" id="Dfactor" placeholder="Demand Factor" name="Dfactor" value="0.85">
     </div>
     </div>
 
@@ -133,7 +147,7 @@ include_once('conn.php');
     <div class="form-group">
     <label class="control-label col-sm-3" for="Ttemp">Target Temp:</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="Ttemp" placeholder="Target Temp" name="Ttemp">
+      <input type="text" class="form-control" id="Ttemp" placeholder="Target Temp" name="Ttemp" value='40'>
     </div>
     </div>
 
@@ -261,33 +275,34 @@ include_once('conn.php');
       <th scope="row">1</th>
       <td>Bus bar</td>
       <td>
-        <select class="form-control" id="etype" name="etype">
+        <select class="form-control" id="bbmaterial" name="bbmaterial" onchange='bbar_cal()'>
               <option value="0">-- Select Value --</option>
               <option value="Al">Al</option>
               <option value="Cu">Copper</option>
+              <option value="TinCu">Tin Copper</option>
 
           </select>        
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="Width" name="dwidth">
+        <input type="text" class="form-control" id="bbwidth" placeholder="Width" name="bbwidth" onkeyup='bbar_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="Thickness" name="dwidth">
+        <input type="text" class="form-control" id="bbthick" placeholder="Thickness" name="bbthick" onkeyup='bbar_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="Runs" name="dwidth">
+        <input type="text" class="form-control" id="bbruns" placeholder="Runs" name="bbruns" onkeyup='bbar_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="Length" name="dwidth">
+        <input type="text" class="form-control" id="bblength" placeholder="Length" name="bblength" onkeyup='bbar_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="current" name="dwidth">
+        <input type="text" class="form-control" id="bbcurrent" placeholder="current" name="bbcurrent" onkeyup='bbar_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="PlossWidth" placeholder="Power Loss" name="dwidth" disabled>
+        <input type="text" class="form-control" id="bbploss" placeholder="Power Loss" name="bbploss" disabled>
       </td>
       <td>
-        <button type="button" class="btn btn-warning">Add</button>
+        <button type="button" class="btn btn-warning" onclick='busbar_tableload()'>Add</button>
       </td>
       
 
@@ -323,7 +338,7 @@ include_once('conn.php');
           </select>        
       </td>
       <td>
-      <select class="form-control" id="pc_type" name="pc_type">
+      <select class="form-control" id="pc_type" name="pc_type" onchange='pcable_cal();'>
               <option value="0">-- Select Value --</option>
           </select>
       </td>
@@ -343,7 +358,7 @@ include_once('conn.php');
         <input type="text" class="form-control" id="pc_ploss" placeholder="Power Loss" name="pc_ploss" disabled>
       </td>
       <td>
-        <button type="button" class="btn btn-warning">Add</button>
+        <button type="button" class="btn btn-warning" onclick='pcable_tableload()'>Add</button>
       </td>
       
 
@@ -406,7 +421,7 @@ include_once('conn.php');
         <input type="text" class="form-control" placeholder="Power Loss" id="pwrloss" disabled>
       </td>
       <td>
-        <button type="button" class="btn btn-warning">Add</button>
+        <button type="button" class="btn btn-warning" onclick='sgear_tableload()'>Add</button>
       </td>
       
 
@@ -414,8 +429,23 @@ include_once('conn.php');
   </tbody>
 </table>
 
+<!--rated current summery-->
+<table class="table" id="rcsumm">
+    <thead class="thead-dark">
+      <tr>
+        <th>Name</th>
+        <th>Power Loss</th>
+      </tr>
+    </thead>
+    <tbody>
+     
+    </tbody>
+  </table>
+  <b><span id="total_sum_value"></span></b> <!--total power loss cal-->
+  
 <!--switch gear ends-->
 </div>
+<button type="button" class="btn btn-primary btn-lg" onclick="calcutaion()">Send</button>
   <!--ends here-->
 </div>
 </body>
@@ -658,7 +688,7 @@ function grate_view(){ //gear current rate view
 
 }
 
-function pwrloss(val){ //power loss calculation 
+function pwrloss(val){ //power gear power loss calculation 
   var mnfg = document.getElementById("gmnf").value;
   var typeg = document.getElementById("gtype").value;
   var rangeg = document.getElementById("grange").value;
@@ -684,11 +714,14 @@ function pwrloss(val){ //power loss calculation
 
 function pcmaterial_load(){ // cable material loader - startup
 
+ /* 
   var pc_size = document.getElementById("pc_size").value = '';
   var pc_runs = document.getElementById("pc_runs").value = '';
   var pc_length = document.getElementById("pc_length").value = '';
   var pc_current = document.getElementById("pc_current").value = '';
   var pc_ploss = document.getElementById("pc_ploss").value = '';
+  */
+
   $.ajax({
           type: 'POST',
           url: 'cal-data.php',
@@ -702,19 +735,24 @@ function pcmaterial_load(){ // cable material loader - startup
              $("#pc_mat").append(new Option(response[i], response[i]));
           
           }
-            
+          pcable_cal(); // power cable calculations 
           }
         });
+  
 }
 
 function pctype_load(val){ // power cable types loader
 
 document.getElementById("pc_type").options.length = 0;
+
+/*
 var pc_size = document.getElementById("pc_size").value = '';
 var pc_runs = document.getElementById("pc_runs").value = '';
 var pc_length = document.getElementById("pc_length").value = '';
 var pc_current = document.getElementById("pc_current").value = '';
 var pc_ploss = document.getElementById("pc_ploss").value = '';
+*/
+
 $.ajax({
         type: 'POST',
         url: 'cal-data.php', 
@@ -729,12 +767,14 @@ $.ajax({
             $("#pc_type").append(new Option(response[i], response[i]));
         
         }
-          
+        pcable_cal(); // power cable calculations 
         }
       });
+      
 }
 
 function pcable_cal(){ // power cable resistance calculator
+
 
   var pc_mat = document.getElementById("pc_mat").value;
   var pc_type = document.getElementById("pc_type").value;
@@ -742,9 +782,9 @@ function pcable_cal(){ // power cable resistance calculator
   var pc_runs = document.getElementById("pc_runs").value;
   var pc_length = document.getElementById("pc_length").value;
   var pc_current = document.getElementById("pc_current").value;
-  
 
-  if(pc_size==''&&pc_runs==''&&pc_length==''&&pc_current==''){
+
+  if(pc_size=='' || pc_runs=='' || pc_length=='' || pc_current==''){
     pc_size = 0;
     pc_runs = 0;
     pc_length = 0;
@@ -773,7 +813,77 @@ function pcable_cal(){ // power cable resistance calculator
         });
 }
 
+function bbar_cal(){ // bus bar resistance calculator
+  var b_mat = document.getElementById("bbmaterial").value;
+  var b_wid = document.getElementById("bbwidth").value;
+  var b_thk = document.getElementById("bbthick").value;
+  var b_run = document.getElementById("bbruns").value;
+  var b_len = document.getElementById("bblength").value;
+  var b_curr = document.getElementById("bbcurrent").value;
 
+  $.ajax({
+          type: 'POST',
+          url: 'cal-data.php',
+          data:
+          {
+            bb_cal: 'ok',
+            bmat: b_mat,  //bus bar material
+            bwid: b_wid,  //bus bar width
+            bthk: b_thk,  //bus bar thick
+            brun: b_run,  //bus bar run
+            blen: b_len,  //bus bar length
+            bcurr: b_curr //bus bar currency
+          },
+          dataType:'json',
+          success: function bbar_cal (response) { 
+            document.getElementById("bbploss").value=response["sum"];
+                     
+          }
+        });
+}
+
+function busbar_tableload(){ //busbar power loss to table
+
+var bbploss = $('#bbploss').val();
+var newrow = '<tr><td>bus bar</td><td>' + bbploss + '</td><td><button type="button" class="btn btn-danger" onclick="prow(this)" >Delete</button></td></tr>';
+$('#rcsumm tr:last').after(newrow);
+ploss_calc();
+
+}
+
+function pcable_tableload(){ //power cable loss to table
+
+var pc_ploss = $('#pc_ploss').val();
+var newrow = '<tr><td>power cable</td><td>' + pc_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="prow(this)" >Delete</button></td></tr>';
+$('#rcsumm tr:last').after(newrow);
+ploss_calc();
+
+
+}
+
+function sgear_tableload(){ //switch gear loss to power
+  var sg_ploss = $('#pwrloss').val();
+  var name = $('#gmnf').val()+$('#gtype').val()+$('#grange').val()
+  var newrow = '<tr><td>'+ name +'</td><td>' + sg_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="prow(this)" >Delete</button></td></tr>';
+  $('#rcsumm tr:last').after(newrow);
+  ploss_calc();
+}
+
+function prow(ele){ // total power loss row deletion
+  row = ele.parentNode.parentNode.rowIndex;
+  document.getElementById("rcsumm").deleteRow(row);
+  ploss_calc();
+}
+
+function ploss_calc(){ //total power loss calculation
+  var table = document.getElementById("rcsumm"), sumVal = 0;
+    for(var i = 1; i < table.rows.length; i++)
+    {
+      sumVal = sumVal + parseFloat(table.rows[i].cells[1].innerHTML);
+    }
+  document.getElementById("total_sum_value").innerHTML = "Total = " + sumVal;
+  //console.log(sumVal);
+} 
 
 </script>
 

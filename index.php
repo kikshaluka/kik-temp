@@ -280,7 +280,7 @@ function tableload(){
 
 }
 
-function calc(){
+function calc(){ // total power loss calculation
             var table = document.getElementById("rcsumm"), sumVal = 0;
             for(var i = 1; i < table.rows.length; i++)
             {
