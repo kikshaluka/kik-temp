@@ -101,7 +101,6 @@ include_once('conn.php');
         <input type="text" class="form-control" id="ddepth" placeholder="Enter Depth" name="ddepth">
       </div>
     </div>
-
     </div>
     </div>
     </div>
@@ -571,9 +570,9 @@ function wfaccal(){ //width factor calculation
         });
 }
 
-function startup(){ //page onload functions are included here.
-  gmnf_load(); //switch gear manufacturer loader
-  pcmaterial_load(); //power cable material loader
+function startup(){   //page onload functions are included here.
+  gmnf_load();        //switch gear manufacturer loader
+  pcmaterial_load();  //power cable material loader
 }
 
 function gmnf_load(){ //gear manufacturers load - startup
@@ -682,10 +681,8 @@ function grate_view(){ //gear current rate view
           success: function grate_view (response) {
             //alert(response["power"]);
             document.getElementById("g_power").value=response["g_ratedi"];
-            
           }
         });
-
 }
 
 function pwrloss(val){ //power gear power loss calculation 
@@ -714,7 +711,7 @@ function pwrloss(val){ //power gear power loss calculation
 
 function pcmaterial_load(){ // cable material loader - startup
 
- /* 
+  /* 
   var pc_size = document.getElementById("pc_size").value = '';
   var pc_runs = document.getElementById("pc_runs").value = '';
   var pc_length = document.getElementById("pc_length").value = '';
@@ -738,13 +735,11 @@ function pcmaterial_load(){ // cable material loader - startup
           pcable_cal(); // power cable calculations 
           }
         });
-  
 }
 
 function pctype_load(val){ // power cable types loader
 
 document.getElementById("pc_type").options.length = 0;
-
 /*
 var pc_size = document.getElementById("pc_size").value = '';
 var pc_runs = document.getElementById("pc_runs").value = '';
@@ -769,12 +764,10 @@ $.ajax({
         }
         pcable_cal(); // power cable calculations 
         }
-      });
-      
+      });      
 }
 
 function pcable_cal(){ // power cable resistance calculator
-
 
   var pc_mat = document.getElementById("pc_mat").value;
   var pc_type = document.getElementById("pc_type").value;
@@ -836,11 +829,10 @@ function bbar_cal(){ // bus bar resistance calculator
           },
           dataType:'json',
           success: function bbar_cal (response) { 
-            document.getElementById("bbploss").value=response["sum"];
-                     
+            document.getElementById("bbploss").value=response["sum"];         
           }
         });
-}
+  }
 
 function busbar_tableload(){ //busbar power loss to table
 
@@ -848,7 +840,6 @@ var bbploss = $('#bbploss').val();
 var newrow = '<tr><td>bus bar</td><td>' + bbploss + '</td><td><button type="button" class="btn btn-danger" onclick="prow(this)" >Delete</button></td></tr>';
 $('#rcsumm tr:last').after(newrow);
 ploss_calc();
-
 }
 
 function pcable_tableload(){ //power cable loss to table
@@ -857,8 +848,6 @@ var pc_ploss = $('#pc_ploss').val();
 var newrow = '<tr><td>power cable</td><td>' + pc_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="prow(this)" >Delete</button></td></tr>';
 $('#rcsumm tr:last').after(newrow);
 ploss_calc();
-
-
 }
 
 function sgear_tableload(){ //switch gear loss to power
@@ -882,7 +871,6 @@ function ploss_calc(){ //total power loss calculation
       sumVal = sumVal + parseFloat(table.rows[i].cells[1].innerHTML);
     }
   document.getElementById("total_sum_value").innerHTML = "Total = " + sumVal;
-  //console.log(sumVal);
 } 
 
 </script>
