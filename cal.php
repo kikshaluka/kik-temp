@@ -27,10 +27,6 @@ if (isset($_POST['pos'])){ // position
         $side2=$sides*$row['side2'];
         $Ae=$top+$front+$back+$side1+$side2;
 
-        if($Ae>1.25){
-            
-        }
-
         $array = array(
             'Ae' => $Ae,
             /*'top' => $row['top'],

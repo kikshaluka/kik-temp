@@ -9,6 +9,7 @@ include_once('conn.php');
   <title>Design | Home</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style/style.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -24,7 +25,7 @@ include_once('conn.php');
     <label class="control-label col-sm-3" for="csys">Cooling System:</label>
     <div class="col-sm-5">
         <select class="form-control" id="csys" onchange="selFunction(this.value)">
-          <option value="select a valid option">--select option--</option>
+          <option value="0">--select option--</option>
             <option value="natural">Natural Ventilasion</option>
             <option value="forced">Forced Ventilasion</option>
             <option value="air">Air Condition</option>
@@ -260,12 +261,12 @@ include_once('conn.php');
       <th scope="col">Bus bar</th>
       <th scope="col">Description</th>
       <th scope="col">Material</th>
-      <th scope="col">Width</th>
-      <th scope="col">Thinckness</th>
+      <th scope="col">Width (mm)</th>
+      <th scope="col">Thinckness (mm)</th>
       <th scope="col">Runs</th>
-      <th scope="col">Length</th>
-      <th scope="col">Current</th>
-      <th scope="col">Power Loss</th>
+      <th scope="col">Length (m)</th>
+      <th scope="col">Current (A)</th>
+      <th scope="col">Power Loss (W)</th>
       <th scope="col">Action</th>
     </tr>
   </thead>
@@ -283,25 +284,25 @@ include_once('conn.php');
           </select>        
       </td>
       <td>
-        <input type="text" class="form-control" id="bbwidth" placeholder="Width" name="bbwidth" onkeyup='bbar_cal()'>
+        <input type="number" class="form-control" id="bbwidth" placeholder="Width" name="bbwidth" onkeyup='bbar_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="bbthick" placeholder="Thickness" name="bbthick" onkeyup='bbar_cal()'>
+        <input type="number" class="form-control" id="bbthick" placeholder="Thickness" name="bbthick" onkeyup='bbar_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="bbruns" placeholder="Runs" name="bbruns" onkeyup='bbar_cal()'>
+        <input type="number" class="form-control" id="bbruns" placeholder="Runs" name="bbruns" onkeyup='bbar_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="bblength" placeholder="Length" name="bblength" onkeyup='bbar_cal()'>
+        <input type="number" class="form-control" id="bblength" placeholder="Length" name="bblength" onkeyup='bbar_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="bbcurrent" placeholder="current" name="bbcurrent" onkeyup='bbar_cal()'>
+        <input type="number" class="form-control" id="bbcurrent" placeholder="current" name="bbcurrent" onkeyup='bbar_cal()'>
       </td>
       <td>
         <input type="text" class="form-control" id="bbploss" placeholder="Power Loss" name="bbploss" disabled>
       </td>
       <td>
-        <button type="button" class="btn btn-warning" onclick='busbar_tableload()'>Add</button>
+        <button type="button" class="btn btn-warning" id="bbadd" onclick='busbar_tableload()' disabled>Add</button>
       </td>
       
 
@@ -321,15 +322,15 @@ include_once('conn.php');
       <th scope="col">Type</th>
       <th scope="col">Size(mm<sup>2</sup>)</th>
       <th scope="col">Runs</th>
-      <th scope="col">Length</th>
-      <th scope="col">Current</th>
-      <th scope="col">Power Loss</th>
+      <th scope="col">Length (m)</th>
+      <th scope="col">Current (A)</th>
+      <th scope="col">Power Loss (W)</th>
       <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th scope="row">1</th>
+      <th scope="row">2</th>
       <td>power cables</td>
       <td>
         <select class="form-control" id="pc_mat" name="pc_mat" onchange="pctype_load(this.value)">
@@ -342,7 +343,7 @@ include_once('conn.php');
           </select>
       </td>
       <td>
-        <input type="text" class="form-control" id="pc_size" placeholder="Thickness" name="pc_size" onkeyup='pcable_cal()'>
+        <input type="text" class="form-control" id="pc_size" placeholder="Size" name="pc_size" onkeyup='pcable_cal()'>
       </td>
       <td>
         <input type="text" class="form-control" id="pc_runs" placeholder="Runs" name="pc_runs" onkeyup='pcable_cal()'>
@@ -357,7 +358,7 @@ include_once('conn.php');
         <input type="text" class="form-control" id="pc_ploss" placeholder="Power Loss" name="pc_ploss" disabled>
       </td>
       <td>
-        <button type="button" class="btn btn-warning" onclick='pcable_tableload()'>Add</button>
+        <button type="button" class="btn btn-warning" id="pcadd" onclick='pcable_tableload()' disabled>Add</button>
       </td>
       
 
@@ -379,48 +380,48 @@ include_once('conn.php');
       <th scope="col">Type</th>
       <th scope="col">Range</th>
       <th scope="col">Model</th>
-      <th scope="col">Qty</th>
-      <th scope="col">Rating</th>
-      <th scope="col">Power Loss</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Rating (A)</th>
+      <th scope="col">Power Loss (W)</th>
       <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th scope="row">1</th>
+      <th scope="row">3</th>
       <td>Switch gear</td>
       <td>
         <select class="form-control" id="gmnf" name="gmnf" onchange='gtype_load(this.value)'>
-        <option value="">-- select one -- </option>
+        <option value="0">-- select one -- </option>
 
           </select>        
       </td>
       <td>
       <select class="form-control" id="gtype" name="gtype" onchange='grange_load(this.value)'>
-        <option value="">-- select one -- </option>
+        <option value="0">-- select one -- </option>
       </select> 
       </td>
       <td>
       <select class="form-control" id="grange" name="grange" onchange='gmodel_load(this.value)'>
-        <option value="">-- select one -- </option>
+        <option value="0">-- select one -- </option>
       </select> 
       </td>
       <td>
       <select class="form-control" id="gmodel" name="gmodel" onchange='grate_view()' >
-        <option value="">-- select one -- </option>
+        <option value="0">-- select one -- </option>
       </select> 
       </td>
       <td>
-        <input type="text" class="form-control" id="g_qty" placeholder="Length" name="dwidth" onkeyup='pwrloss(this.value)'>
+        <input type="text" class="form-control" id="g_qty" placeholder="Quantity" name="dwidth" onkeyup='pwrloss(this.value)'>
       </td>
       <td>
-        <input type="text" class="form-control" placeholder="current"  name="g_power" id='g_power' disabled>
+        <input type="text" class="form-control" placeholder="Rating"  name="g_power" id='g_power' disabled>
       </td>
       <td>
         <input type="text" class="form-control" placeholder="Power Loss" id="pwrloss" disabled>
       </td>
       <td>
-        <button type="button" class="btn btn-warning" onclick='sgear_tableload()'>Add</button>
+        <button type="button" class="btn btn-warning" id='sgadd' onclick='sgear_tableload()' disabled>Add</button>
       </td>
       
 
@@ -440,7 +441,7 @@ include_once('conn.php');
      
     </tbody>
   </table>
-  <b><span id="total_sum_value"></span></b> <!--total power loss cal-->
+  <b><span>Total: </span><span id="total_sum_value"></span></b> <!--total power loss cal-->
   
 <!--switch gear ends-->
 </div>
@@ -453,10 +454,11 @@ include_once('conn.php');
 
 // Short-form of `document.ready`
 $(function(){ //Hide all the divs on start
-    $("#natural").hide();
+    $("#natural").hide(); 
     $("#forced").hide();
     $("#air").hide();
     $("#larea").prop('disabled', true);
+
 });
 
 // Position Type change according Enclosure Type
@@ -499,7 +501,7 @@ function myFunction(one,two,three) { // Div selection to hide
     myFunction('air','forced','natural');
     break;
   default:
-    alert(name)
+    alert("Select a valid option")
 } 
   
 } 
@@ -535,6 +537,7 @@ function calcutaion(){  //Ae Calculation
             document.getElementById('Ae').value = response['Ae'].toFixed(2);
           }
         });
+        ef_cooling();
 
   }
 }
@@ -548,9 +551,14 @@ function wfaccal(){ //width factor calculation
   
 
   function gtype_load(val){ // switch gear type drop down depend on mnf
+
+    sgear_add_dis(); // switch gear add button disable
+
     document.getElementById("gtype").options.length = 0;
     document.getElementById("grange").options.length = 0;
     document.getElementById("gmodel").options.length = 0;
+
+
     $.ajax({
           type: 'POST',
           url: 'cal-data.php',
@@ -576,9 +584,13 @@ function startup(){   //page onload functions are included here.
 }
 
 function gmnf_load(){ //gear manufacturers load - startup
+
+  sgear_add_dis(); // switch gear add button disable
+
   document.getElementById("pwrloss").value="";
   document.getElementById("g_qty").value="";
   document.getElementById("g_power").value="";
+
   $.ajax({
           type: 'POST',
           url: 'cal-data.php',
@@ -598,6 +610,9 @@ function gmnf_load(){ //gear manufacturers load - startup
 }
 
 function grange_load(val){ //gear range loader
+
+  sgear_add_dis(); // switch gear add button disable
+
   document.getElementById("grange").options.length = 0;
   document.getElementById("gmodel").options.length = 0;
   var gmnf = document.getElementById("gmnf").value;
@@ -627,6 +642,9 @@ function grange_load(val){ //gear range loader
 }
 
 function gmodel_load(val){ //gear range loader
+
+  sgear_add_dis(); // switch gear add button disable
+
   document.getElementById("gmodel").options.length = 0;
   var mnfg = document.getElementById("gmnf").value;
   var typeg = document.getElementById("gtype").value;
@@ -657,6 +675,9 @@ function gmodel_load(val){ //gear range loader
 
 
 function grate_view(){ //gear current rate view
+
+  sgear_add_dis(); // switch gear add button disable
+
   var mnfg = document.getElementById("gmnf").value;
   var typeg = document.getElementById("gtype").value;
   var rangeg = document.getElementById("grange").value;
@@ -664,7 +685,6 @@ function grate_view(){ //gear current rate view
   document.getElementById("pwrloss").value="";
   document.getElementById("g_qty").value="";
   document.getElementById("g_power").value="";
-
 
   $.ajax({
           type: 'POST',
@@ -686,10 +706,15 @@ function grate_view(){ //gear current rate view
 }
 
 function pwrloss(val){ //power gear power loss calculation 
+
+  sgear_add_dis(); // switch gear add button disable
+
+
   var mnfg = document.getElementById("gmnf").value;
   var typeg = document.getElementById("gtype").value;
   var rangeg = document.getElementById("grange").value;
   var modelg = document.getElementById("gmodel").value;
+
   $.ajax({
           type: 'POST',
           url: 'cal-data.php',
@@ -718,7 +743,6 @@ function pcmaterial_load(){ // cable material loader - startup
   var pc_current = document.getElementById("pc_current").value = '';
   var pc_ploss = document.getElementById("pc_ploss").value = '';
   */
-
   $.ajax({
           type: 'POST',
           url: 'cal-data.php',
@@ -739,6 +763,7 @@ function pcmaterial_load(){ // cable material loader - startup
 
 function pctype_load(val){ // power cable types loader
 
+  pcable_add_dis();
 document.getElementById("pc_type").options.length = 0;
 /*
 var pc_size = document.getElementById("pc_size").value = '';
@@ -768,6 +793,8 @@ $.ajax({
 }
 
 function pcable_cal(){ // power cable resistance calculator
+
+  pcable_add_dis(); //power cable add button diable
 
   var pc_mat = document.getElementById("pc_mat").value;
   var pc_type = document.getElementById("pc_type").value;
@@ -807,12 +834,17 @@ function pcable_cal(){ // power cable resistance calculator
 }
 
 function bbar_cal(){ // bus bar resistance calculator
+
+  //document.getElementById("bbploss").value=0;
+
   var b_mat = document.getElementById("bbmaterial").value;
   var b_wid = document.getElementById("bbwidth").value;
   var b_thk = document.getElementById("bbthick").value;
   var b_run = document.getElementById("bbruns").value;
   var b_len = document.getElementById("bblength").value;
   var b_curr = document.getElementById("bbcurrent").value;
+
+  bbar_add_dis(); // bus bar add button disable
 
   $.ajax({
           type: 'POST',
@@ -843,16 +875,15 @@ ploss_calc();
 }
 
 function pcable_tableload(){ //power cable loss to table
-
-var pc_ploss = $('#pc_ploss').val();
-var newrow = '<tr><td>power cable</td><td>' + pc_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="prow(this)" >Delete</button></td></tr>';
-$('#rcsumm tr:last').after(newrow);
-ploss_calc();
+  var pc_ploss = $('#pc_ploss').val();
+  var newrow = '<tr><td>power cable</td><td>' + pc_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="prow(this)" >Delete</button></td></tr>';
+  $('#rcsumm tr:last').after(newrow);
+  ploss_calc();
 }
 
 function sgear_tableload(){ //switch gear loss to power
   var sg_ploss = $('#pwrloss').val();
-  var name = $('#gmnf').val()+$('#gtype').val()+$('#grange').val()
+  var name = $('#gmnf').val() +" "+$('#gtype').val()+" "+ $('#gmodel').val();
   var newrow = '<tr><td>'+ name +'</td><td>' + sg_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="prow(this)" >Delete</button></td></tr>';
   $('#rcsumm tr:last').after(newrow);
   ploss_calc();
@@ -870,8 +901,71 @@ function ploss_calc(){ //total power loss calculation
     {
       sumVal = sumVal + parseFloat(table.rows[i].cells[1].innerHTML);
     }
-  document.getElementById("total_sum_value").innerHTML = "Total = " + sumVal;
+  document.getElementById("total_sum_value").innerHTML = sumVal;
 } 
+
+function sgear_add_dis(){ //swich gear add buton disable
+    
+    var qtyg = document.getElementById("g_qty").value; //space gear add button
+    var mnfg = document.getElementById("gmnf").value;
+    var typeg = document.getElementById("gtype").value;
+    var rangeg = document.getElementById("grange").value;
+    var modelg = document.getElementById("gmodel").value;
+
+      //alert(qtyg);
+      if(qtyg!='' && mnfg !='0' && typeg!='0' && rangeg!='0' && modelg!='0'){
+        document.getElementById("sgadd").disabled = false; 
+      }
+      else{
+        document.getElementById("sgadd").disabled = true; 
+      }
+}
+
+function pcable_add_dis(){ //power cable add buton disable
+    
+    var matp = document.getElementById("pc_mat").value; //space gear add button
+    var typep = document.getElementById("pc_type").value;
+    var sizep = document.getElementById("pc_size").value;
+    var runsp = document.getElementById("pc_runs").value;
+    var lenp = document.getElementById("pc_length").value;
+    var currp = document.getElementById("pc_current").value;
+
+      if(sizep!='' && runsp != '' && lenp != '' && currp != '' && matp !='0' && typep !='0'){
+        document.getElementById("pcadd").disabled = false; 
+      }
+      else{
+        document.getElementById("pcadd").disabled = true; 
+      }
+}
+
+function bbar_add_dis(){ //bus bar add buton disable
+    
+    var matb = document.getElementById("bbmaterial").value; //space gear add button
+    var widb = document.getElementById("bbwidth").value;
+    var thickb = document.getElementById("bbthick").value;
+    var runsb = document.getElementById("bbruns").value;
+    var lenb = document.getElementById("bblength").value;
+    var currb = document.getElementById("bbcurrent").value;
+
+      if(widb != '' && thickb != '' && runsb != '' && lenb !='' && currb !='' && matb !='0'){
+        document.getElementById("bbadd").disabled = false; 
+      }
+      else{
+        document.getElementById("bbadd").disabled = true; 
+      }
+}
+
+function ef_cooling(){ //t0.5 calculation
+  var cool = document.getElementById("csys").value; //cooling system
+  var larea = document.getElementById("larea").value; //louver area
+  var ae = document.getElementById("Ae").value; //Ae
+  var tploss = document.getElementById("total_sum_value").innerHTML; //total power loss
+
+  alert(tploss);
+
+
+}
+
 
 </script>
 
