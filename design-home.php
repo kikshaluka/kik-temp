@@ -441,7 +441,7 @@ include_once('conn.php');
      
     </tbody>
   </table>
-  <b><span>Total: </span><span id="total_sum_value"></span></b> <!--total power loss cal-->
+  <b><span>Raw Power Loss : </span><span id="total_sum_value"></span></b> <!--total power loss cal-->
   
 <!--switch gear ends-->
 </div>
@@ -956,13 +956,19 @@ function bbar_add_dis(){ //bus bar add buton disable
 }
 
 function ef_cooling(){ //t0.5 calculation
-  var cool = document.getElementById("csys").value; //cooling system
-  var larea = document.getElementById("larea").value; //louver area
-  var ae = document.getElementById("Ae").value; //Ae
-  var tploss = document.getElementById("total_sum_value").innerHTML; //total power loss
+  var ae = document.getElementById("Ae").value;
+  var cs = document.getElementById("csys").value;
 
-  alert(tploss);
+  if (ae != '' || cs != ''){ // to find ae or cooling system is blank
+  //to send data to T0.5 calculation.
+    if(ae > 1.25 && (cs=='forced' || cs=='air')){ 
+        var hs = document.getElementById("hseparation").value;
 
+    }
+  }
+  else{
+    alert("Fill the empty boxes");
+  }
 
 }
 
