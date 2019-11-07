@@ -956,25 +956,47 @@ function bbar_add_dis(){ //bus bar add buton disable
 }
 
 function ef_cooling(){ //t0.5 calculation
-  var ae = document.getElementById("Ae").value;
-  var cs = document.getElementById("csys").value;
-
+  var ae = document.getElementById("Ae").value; // ae
+  var cs = document.getElementById("csys").value;// cool system
+  var height = document.getElementById('dheight').value; // height
+  var width = document.getElementById('dwidth').value; // width
+  var depth = document.getElementById('ddepth').value; // depth
+  var wFactor = document.getElementById('wFactor').value; // width factor
+  var pos = document.getElementById('pos').value; // position
+  var top = ((width/wFactor)*depth)/(1000*1000); // top dimention
+  var hs = document.getElementById("hseparation").value; // horizontal sep
+  var rpwrloss = document.getElementById("total_sum_value").innerHTML; //row power loss
   if (ae != '' || cs != ''){ // to find ae or cooling system is blank
   //to send data to T0.5 calculation.
     if(ae > 1.25 && (cs=='forced' || cs=='air')){ 
-        var hs = document.getElementById("hseparation").value;
+      
+      $.ajax({
+          type: 'POST',
+          url: 'cal.php',
+          data:
+          {
+            l125wo: 'ok',
+            horz: hs,  //horizontal separation
+            po: pos,   //position
+            he: height, //height
+            wid: width, // width
+            wf: wFactor, // width factor
+            dp: depth, //depth
+            pwrloss :rpwrloss // row power loss
+          },
+          dataType:'json',
+          success: function ef_cooling (response) { 
+            document.getElementById("bbploss").value=response["sum"];         
+          }
+        });
 
     }
   }
   else{
     alert("Fill the empty boxes");
   }
-
 }
 
 
 </script>
-
-
-
 </html>

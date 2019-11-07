@@ -29,15 +29,25 @@ if (isset($_POST['pos'])){ // position
 
         $array = array(
             'Ae' => $Ae,
-            /*'top' => $row['top'],
-            'front' => $row['front'],
-            'back' => $row['back'],
-            'side1' => $row['side1'],
-            'side2' => $row['side2'],
-            'curve' => $row['curve'],*/
         );
     }
     die(json_encode($array));
+}
+
+if(isset($_POST['l125wo'])){
+    $pos = $_POST['po']; // position
+    $hs = $_POST['horz']; // horizontal separation
+    $height = $_POST['he']; // height
+    $width = $_POST['wid']; // width 
+    $wFactor = $_POST['wf']; // width factor
+    $depth = $_POST['dp']; // Depth
+    $rpwrloss = $_POST['pwrloss']; //row power loss
+
+
+
+    $array = array(
+    
+    );
 }
 
     
