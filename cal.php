@@ -35,19 +35,51 @@ if (isset($_POST['pos'])){ // position
 }
 
 if(isset($_POST['l125wo'])){
-    $pos = $_POST['po']; // position
-    $hs = $_POST['horz']; // horizontal separation
+
+    $posi = $_POST['po']; // position
     $height = $_POST['he']; // height
     $width = $_POST['wid']; // width 
     $wFactor = $_POST['wf']; // width factor
     $depth = $_POST['dp']; // Depth
     $rpwrloss = $_POST['pwrloss']; //row power loss
+    $Ae = $_POST['ae'];
+    $hs = $_POST['horz']; // horizontal separation
 
-
-
-    $array = array(
+    $k = 0.0459536911922546/(1-0.987175746302811*exp(-0.0647798482560785*$Ae)); // based on Ae k value is calculated
     
-    );
+    switch ($hs) { // based on horizontal sep. d is calculated
+    case 0:
+        $d = 1;
+        break;
+    case 1:
+        $d = 1.05;
+        break;
+    case 2:
+        $d = 1.15;
+        break;
+    case 3:
+        $d = 1.3;
+        break;
+    default:
+        $d = 1.3;
+    }
+    
+    //$array = array();
+    $sql = $conn->query("SELECT `curve` FROM `position` WHERE `pos_name`='$posi'");
+    $row = $sql->fetch_assoc();
+    $curve = $row['curve']; //curve measurment
+    //echo $curve;
+
+    $sql = $conn->query("SELECT `a`,`b`,`c` FROM `l1.25wo` WHERE `curve` = '$curve'");
+    while ($row = $sql->fetch_assoc()) {
+        $a=$row['a'];
+        $b=$row['b'];
+        $c=$row['c'];
+        echo $a.$b.$c;
+       
+    }
+    $c = $a*exp(-exp($b-$c));
+
 }
 
     

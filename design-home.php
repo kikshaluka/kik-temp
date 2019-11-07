@@ -975,14 +975,15 @@ function ef_cooling(){ //t0.5 calculation
           url: 'cal.php',
           data:
           {
-            l125wo: 'ok',
+            l125wo: '123',
             horz: hs,  //horizontal separation
             po: pos,   //position
             he: height, //height
             wid: width, // width
             wf: wFactor, // width factor
             dp: depth, //depth
-            pwrloss :rpwrloss // row power loss
+            pwrloss: rpwrloss, // row power loss
+            Ae: ae // Ae value 
           },
           dataType:'json',
           success: function ef_cooling (response) { 
