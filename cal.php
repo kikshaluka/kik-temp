@@ -78,7 +78,11 @@ if(isset($_POST['l125wo'])){
         echo $a.$b.$c;
        
     }
-    $c = $a*exp(-exp($b-$c));
+    $ao = (($width/$wFactor)*$depth)/(1000*1000); // top surface
+    $f = (($height/1000)**1.35) /$ao; 
+    $c = $a*exp(-exp($b-$c*$ao))*(0.6/1.6)+1;
+
+    $t05=$k*$d*(($rpwrloss)*);
 
 }
 

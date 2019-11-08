@@ -965,7 +965,9 @@ function ef_cooling(){ //t0.5 calculation
   var pos = document.getElementById('pos').value; // position
   var top = ((width/wFactor)*depth)/(1000*1000); // top dimention
   var hs = document.getElementById("hseparation").value; // horizontal sep
+  var Dfactor = document.getElementById("Dfactor").value; // Demand Factor
   var rpwrloss = document.getElementById("total_sum_value").innerHTML; //row power loss
+  
   if (ae != '' || cs != ''){ // to find ae or cooling system is blank
   //to send data to T0.5 calculation.
     if(ae > 1.25 && (cs=='forced' || cs=='air')){ 
@@ -983,7 +985,8 @@ function ef_cooling(){ //t0.5 calculation
             wf: wFactor, // width factor
             dp: depth, //depth
             pwrloss: rpwrloss, // row power loss
-            Ae: ae // Ae value 
+            Ae: ae, // Ae value 
+            dfac: Dfactor // demand factor
           },
           dataType:'json',
           success: function ef_cooling (response) { 
