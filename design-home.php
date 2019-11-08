@@ -993,10 +993,9 @@ function ef_cooling(){ //t0.5 calculation
             document.getElementById("bbploss").value=response["sum"];         
           }
         });
-
     }
     elseif(ae > 1.25 && cs=='natural'){
-
+      
     }
   }
   else{
