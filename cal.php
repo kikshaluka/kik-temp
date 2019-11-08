@@ -44,6 +44,7 @@ if(isset($_POST['l125wo'])){
     $rpwrloss = $_POST['pwrloss']; //row power loss
     $Ae = $_POST['ae'];
     $hs = $_POST['horz']; // horizontal separation
+    $dfac = $_POST['dfac']; // demand factor
 
     $k = 0.0459536911922546/(1-0.987175746302811*exp(-0.0647798482560785*$Ae)); // based on Ae k value is calculated
     
@@ -75,15 +76,17 @@ if(isset($_POST['l125wo'])){
         $a=$row['a'];
         $b=$row['b'];
         $c=$row['c'];
-        echo $a.$b.$c;
+        //echo $a.$b.$c;
        
     }
     $ao = (($width/$wFactor)*$depth)/(1000*1000); // top surface
     $f = (($height/1000)**1.35) /$ao; 
-    $c = $a*exp(-exp($b-$c*$ao))*(0.6/1.6)+1;
-
-    $t05=$k*$d*(($rpwrloss)*);
-
+    $cd = $a*exp(-exp($b-$c*$ao))*(0.6/1.6)+1;  
+    $loss = $rpwrloss*($dfac**2);  // Actual power loss
+    $t05 = $k*$d*($loss**0.804); // t05
+    echo $t05.'<br>';
+    echo $f.'<br>';
+    echo $cd.'<br>';
 }
 
     

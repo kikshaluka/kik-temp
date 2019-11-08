@@ -889,7 +889,7 @@ function sgear_tableload(){ //switch gear loss to power
   ploss_calc();
 }
 
-function prow(ele){ // total power loss row deletion
+function prow(ele){ //  power loss row deletion
   row = ele.parentNode.parentNode.rowIndex;
   document.getElementById("rcsumm").deleteRow(row);
   ploss_calc();
@@ -993,6 +993,9 @@ function ef_cooling(){ //t0.5 calculation
             document.getElementById("bbploss").value=response["sum"];         
           }
         });
+
+    }
+    elseif(ae > 1.25 && cs=='natural'){
 
     }
   }
