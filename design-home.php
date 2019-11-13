@@ -994,7 +994,29 @@ function ef_cooling(){ //t0.5 calculation
           }
         });
     }
-  // 
+  else if(ae > 1.25 && (cs=='natural')){
+    $.ajax({
+          type: 'POST',
+          url: 'cal.php',
+          data:
+          {
+            l125w: '123',
+            horz: hs,  //horizontal separation
+            po: pos,   //position
+            he: height, //height
+            wid: width, // width
+            wf: wFactor, // width factor
+            dp: depth, //depth
+            pwrloss: rpwrloss, // row power loss
+            Ae: ae, // Ae value 
+            dfac: Dfactor // demand factor
+          },
+          dataType:'json',
+          success: function ef_cooling (response) { 
+            document.getElementById("bbploss").value=response["sum"];         
+          }
+        });
+  }
   }
   else{
     alert("Fill the empty boxes");
