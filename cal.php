@@ -205,8 +205,8 @@ $test = Array(5,2,8,3,9,12,20,52100,52460,62000);
 sort($test);
 $nearest = array_numeric_sorted_nearest($test, 8256);
 
-if(isset($_POST['l125w']))   {
-    
+if(isset($_POST['l125w'])){
+
 }
 
 ?>
