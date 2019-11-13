@@ -80,13 +80,16 @@ if(isset($_POST['l125wo'])){
        
     }
     $ao = (($width/$wFactor)*$depth)/(1000*1000); // top surface
-    $f = (($height/1000)**1.35) /$ao; 
-    $cd = $a*exp(-exp($b-$c*$ao))*(0.6/1.6)+1;  
+    $f = (($height/1000)**1.35)/$ao; 
+    $cd = $a*exp(-exp($b-$c*$f))*(0.6/1.6)+1;  
     $loss = $rpwrloss*($dfac**2);  // Actual power loss
     $t05 = $k*$d*($loss**0.804); // t05
-    echo $t05.'<br>';
-    echo $f.'<br>';
-    echo $cd.'<br>';
+    $t1 = $t05 * $cd;
+    echo $t05.'<br/>';
+    echo $f.'<br/>';
+    echo $cd.'<br/>';
+    echo $t1.'<br/>';
+
 }
 
     

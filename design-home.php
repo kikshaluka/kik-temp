@@ -994,9 +994,7 @@ function ef_cooling(){ //t0.5 calculation
           }
         });
     }
-    elseif(ae > 1.25 && cs=='natural'){
-      
-    }
+  // 
   }
   else{
     alert("Fill the empty boxes");
