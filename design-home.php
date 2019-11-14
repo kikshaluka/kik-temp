@@ -1005,6 +1005,7 @@ function ef_cooling(){ //t0.5 calculation
             Ae: ae, // Ae value 
             la: larea, //larea
             horz: hs, //horizontal Area
+            he: height, //height
             wid: width, // width
             wf: wFactor, // width factor
             dp: depth, //depth
@@ -1025,7 +1026,12 @@ function ef_cooling(){ //t0.5 calculation
           data:
           {
             h125w: '123',
-            Ae: ae // Ae value 
+            Ae: ae, // Ae value
+            he: height, //height
+            wid: width, // width
+            wf: wFactor, // width factor
+            pwrloss: rpwrloss, // row power loss
+            dfac: Dfactor // demand factor 
           },
           dataType:'json',
           success: function ef_cooling (response) { 

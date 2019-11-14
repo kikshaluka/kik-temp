@@ -263,13 +263,26 @@ if(isset($_POST['l125w'])){
     $t1 = $t05*$c2; //t1
     echo $t05.'<br/>'; //t0.5
     echo $t1; //t1
-    }
+    }    
+}
+if(isset($_POST['h125w'])){
+    $ae = $_POST['Ae']; //Ae
+    $width = $_POST['wid']; // width 
+    $wFactor = $_POST['wf']; // width factor
+    $height = $_POST['he']; // height
+    $rpwrloss = $_POST['pwrloss']; //row power loss
+    $dfac = $_POST['dfac']; // demand factor
 
-    if(isset($_POST['h125w'])){
-        $ae = $_POST['Ae']; //Ae
-        $k = 70.2496526710266*(1+1.35363728862232*$ae/0.00227234009400175)^(-1/1.35363728862232); 
-    }
-    
+    $loss = $rpwrloss*($dfac**2); //actual power loss
+    $val = $height/($width/$wFactor);
+
+    $k = 70.2496526710266*(1+1.35363728862232*$ae/0.00227234009400175)**(-1/1.35363728862232); 
+    $c = 1.25746564411252/(1 + EXP(3.0499379294743-2.85423150337704*$val))**(1/13.3533620666701);
+
+    $t05 = $k*1*($loss**0.804);
+    $t1 = $t05*$c;
+    echo $t05."<br/>".$t1."<br/>";
+
 }
 
 ?>
