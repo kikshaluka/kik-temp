@@ -967,6 +967,7 @@ function ef_cooling(){ //t0.5 calculation
   var hs = document.getElementById("hseparation").value; // horizontal sep
   var Dfactor = document.getElementById("Dfactor").value; // Demand Factor
   var rpwrloss = document.getElementById("total_sum_value").innerHTML; //row power loss
+  var larea = document.getElementById("larea").value;
   
   if (ae != '' || cs != ''){ // to find ae or cooling system is blank
   //to send data to T0.5 calculation.
@@ -1001,19 +1002,34 @@ function ef_cooling(){ //t0.5 calculation
           data:
           {
             l125w: '123',
-            horz: hs,  //horizontal separation
-            po: pos,   //position
-            he: height, //height
+            Ae: ae, // Ae value 
+            la: larea, //larea
+            horz: hs, //horizontal Area
             wid: width, // width
             wf: wFactor, // width factor
             dp: depth, //depth
             pwrloss: rpwrloss, // row power loss
-            Ae: ae, // Ae value 
             dfac: Dfactor // demand factor
+
           },
           dataType:'json',
           success: function ef_cooling (response) { 
-            document.getElementById("bbploss").value=response["sum"];         
+            document.getElementById("bbploss").value = response["sum"];         
+          }
+        });
+  }
+  else if(ae < 1.25 && (cs=='natural')){
+    $.ajax({
+          type: 'POST',
+          url: 'cal.php',
+          data:
+          {
+            h125w: '123',
+            Ae: ae // Ae value 
+          },
+          dataType:'json',
+          success: function ef_cooling (response) { 
+            document.getElementById("bbploss").value = response["sum"];         
           }
         });
   }

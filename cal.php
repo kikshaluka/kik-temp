@@ -116,6 +116,27 @@ function array_numeric_sorted_nearest($array, $value, $method = ARRAY_NEAREST_DE
     return $array[$best_index];
 }
 
+//horizontal separation 
+
+function horz(int $val){
+    switch ($val) { // based on horizontal sep. d is calculated
+        case 0:
+            $d = 1;
+            break;
+        case 1:
+            $d = 1.05;
+            break;
+        case 2:
+            $d = 1.15;
+            break;
+        case 3:
+            $d = 1.3;
+            break;
+        default:
+            $d = 1.3;
+        }
+        return $d;
+}
 
 
 
@@ -157,23 +178,7 @@ if(isset($_POST['l125wo'])){
     $dfac = $_POST['dfac']; // demand factor
 
     $k = 0.0459536911922546/(1-0.987175746302811*exp(-0.0647798482560785*$Ae)); // based on Ae k value is calculated
-    
-    switch ($hs) { // based on horizontal sep. d is calculated
-    case 0:
-        $d = 1;
-        break;
-    case 1:
-        $d = 1.05;
-        break;
-    case 2:
-        $d = 1.15;
-        break;
-    case 3:
-        $d = 1.3;
-        break;
-    default:
-        $d = 1.3;
-    }
+    $d=horz($hs);
     
     //$array = array();
     $sql = $conn->query("SELECT `curve` FROM `position` WHERE `pos_name`='$posi'");
@@ -205,8 +210,66 @@ $test = Array(5,2,8,3,9,12,20,52100,52460,62000);
 sort($test);
 $nearest = array_numeric_sorted_nearest($test, 8256);
 
-if(isset($_POST['l125w'])){
 
+
+if(isset($_POST['l125w'])){
+    $ae = $_POST['Ae']; //Ae
+    $larea = $_POST['la']; //louver area
+    $hs = $_POST['horz']; //Horizontal Separation
+    $width = $_POST['wid']; // width 
+    $wFactor = $_POST['wf']; // width factor
+    $depth = $_POST['dp']; // Depth
+    $height = $_POST['he']; // height
+    $rpwrloss = $_POST['pwrloss']; //row power loss
+    $dfac = $_POST['dfac']; // demand factor
+    
+    $sql = $conn->query("SELECT indx FROM `l1.25w`");
+    $array=array();
+    while ($row = $sql->fetch_assoc()) {            
+        array_push($array,$row['indx']);
+    } 
+    sort($array);
+    $nearest = array_numeric_sorted_nearest($array, $ae);
+    $sql2 = $conn->query("SELECT  `a`, `b`, `c`, `d` FROM `l1.25w` WHERE `indx`=$nearest");
+    while ($row2 = $sql2->fetch_assoc()) {
+        $a=$row2['a'];
+        $b=$row2['b'];
+        $c=$row2['c'];
+        $d=$row2['d'];
+        //echo $nearest."<br/>".$a."<br/>".$b."<br/>".$c."<br/>".$d;
+        $k=($a+$b*$larea)/(1+$c*$larea+$d*$larea**2)*(0.33/0.38)+0.05; //k calculation
+        $d=horz($hs); // horizontal searation
+        $ao = (($width/$wFactor)*$depth)/(1000*1000); // top surface
+        $f1 = (($height/1000)**1.35)/$ao;
+
+        $sql3 = $conn->query("SELECT indx FROM `l1.25wf`");
+        $array3=array();
+        while ($row3 = $sql3->fetch_assoc()) {            
+        array_push($array3,$row3['indx']);
+    }
+
+        sort($array3);
+        $nearest = array_numeric_sorted_nearest($array3, $f1);
+        $sql2 = $conn->query("SELECT  `a`, `b`, `c`, `d` FROM `l1.25wf` WHERE `indx`=$nearest");
+    while ($row2 = $sql2->fetch_assoc()) {
+        $aa=$row2['a'];
+        $ba=$row2['b'];
+        $ca=$row2['c'];
+        $da=$row2['d'];
+        $c2 = ($aa+$ba*$larea)/(1+$ca*$larea+$da*$larea**2);        
+    }
+    $loss = $rpwrloss*($dfac**2);  // Actual power loss
+    $t05 = $k*$d*($loss**0.715); // t05
+    $t1 = $t05*$c2; //t1
+    echo $t05.'<br/>'; //t0.5
+    echo $t1; //t1
+    }
+
+    if(isset($_POST['h125w'])){
+        $ae = $_POST['Ae']; //Ae
+        $k = 70.2496526710266*(1+1.35363728862232*$ae/0.00227234009400175)^(-1/1.35363728862232); 
+    }
+    
 }
 
 ?>
