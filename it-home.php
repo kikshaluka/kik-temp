@@ -9,19 +9,29 @@
   <title>Home | IT</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-</head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script></head>
 <body>
 
 <div class="container">
   <div class="btn-group">
     <button type="button" class="btn btn-primary" value="u" onclick="clickevent(this.value)">User Control</button>
-    <button type="button" class="btn btn-primary" value="i" onclick="clickevent(this.value)">Item Management</button>
-    <button type="button" class="btn btn-primary">Orders</button>
+   
+    <div class="btn-group">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+       Item Managment
+    </button>
+    <div class="dropdown-menu">
+    <button type="button" class="btn btn-primary" value="g" onclick="clickevent(this.value)">Gear </button>
+    </div>
+  </div>
+  <button type="button" class="btn btn-primary" value="o" onclick="clickevent(this.value)">Orders</button>
+    
   </div>
 </div>
+
 <table class="table table-striped table-bordered" id="onetable">
 </table>
 <!-- Modal -->
@@ -66,6 +76,9 @@ function clickevent(val){ //function to catch click events.
         break;
       case 'i':
         itemtableload();
+        break;
+      case 'g':
+        geartableload();
         break;
       case 'o':
         ordertableview();
@@ -113,26 +126,28 @@ function usertableload(){ //user table
         });
 }
 
-function itemtableload(){ //item load table
+function geartableload(){ //item load table
   var table = document.getElementById('onetable');
   $.ajax({
           type: 'POST',
           url: 'ajax.php',
           data:
           {
-            usrtableload: "utb"
+            geartableload: "gtb"
             },
           dataType:'json',
-          success: function usertableload (response) {
+          success: function geartableload (response) {
               $("#onetable tr").remove();
               var row = table.insertRow(0);
               var cell1 = row.insertCell(0);
               var cell2 = row.insertCell(1);
               var cell3 = row.insertCell(2);
-              cell1.innerHTML = "<td class='table-dark'><b>Number</b></td>";
-              cell2.innerHTML = "<td><b>Names</b></td>";
-              cell3.innerHTML = "<td><b>Actions</b></td>";
-              for(var i = 1; i <= response.length; i++)
+              var cell4 = row.insertCell(3);
+              cell1.innerHTML = "<td class='table-dark'><b>Manufacturer</b></td>";
+              cell2.innerHTML = "<td><b>Model</b></td>";
+              cell3.innerHTML = "<td><b>Type</b></td>";
+              cell4.innerHTML = "<td><b>Actions</b></td>";
+              for(var i = 0; i <= response.length; i++ )
               {
                 var row = table.insertRow(i);  
                 if(i%2==0){continue;}
@@ -140,9 +155,12 @@ function itemtableload(){ //item load table
               var cel1 = row.insertCell(0);
               var cel2 = row.insertCell(1);
               var cel3 = row.insertCell(2);
-              cel1.innerHTML = response[i-1];
-              cel2.innerHTML = response[i];
-              cel3.innerHTML = '<button type="button" class="btn btn-warning" value='+ i +' >Update</button><button type="button" class="btn btn-danger">Delete</button>';
+              var cel4 = row.insertCell(3);
+              cel1.innerHTML = response[i];
+              cel2.innerHTML = response[i+1];
+              cel3.innerHTML = response[i+2];
+              cel4.innerHTML = '<button type="button" class="btn btn-warning" value='+ i +' >Update</button><button type="button" class="btn btn-danger">Delete</button>';
+              console.log(response);
               } 
             }
             var crows = document.getElementById(onetable).getElementsByTagName("tr").length;
@@ -150,6 +168,11 @@ function itemtableload(){ //item load table
           }
         });
 }
+
+
+
+
+
 
 function addnewuser(empno,name,pass){ // add new engineer 
   var empno = document.getElementById(empno).value;

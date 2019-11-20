@@ -22,7 +22,7 @@
     <form>
       <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
       <input type="password" id="password" class="fadeIn third" name="login" placeholder="password">
-      <input type="button" class="fadeIn fourth" value="Log In" onclick="send(this.value)">
+      <button type="button" class="fadeIn fourth" value="Log In" onclick="sendlog()">log in</button>
     </form>
 
     <!-- Remind Passowrd -->
@@ -35,24 +35,29 @@
 </body>
 <script>
 
-    function send(val){ 
+    function sendlog(){ 
        var uname = document.getElementById('login').value;
        var password = document.getElementById('password').value;
-       var str1="sxojjfmkcvjfskfoiro";
-       var str2="judfhiurklfnsdifhreis";
-       var password=str1.concat(password,str2);
+
         $.ajax({
           type: 'POST',
-          url: 'ajax.php',
+          url: 'login-ajax.php',
           data:
             {
-            val_option=val,  
+            val_option:"login",  
             name: uname,
-            pass=password
+            pass:password
             },
           dataType:'json',
-          success: function send (response) {
-            alert("DID");
+          success: function sendlog (response) {
+            var value = response['stat'];
+            var res =  response['res'];
+            if(value==true && res=='success'){
+              location.replace("design-home.php");
+            }
+            else{
+              location.replace("login.php");
+            }
           }
         });
       }

@@ -139,7 +139,6 @@ function horz(int $val){
 }
 
 
-
 if (isset($_POST['pos'])){ // position 
 
     $pos=$_POST['pos']; //position
@@ -201,8 +200,11 @@ if(isset($_POST['l125wo'])){
     $t05 = $k*$d*($loss**0.804); // t05
     $t1 = $t05 * $cd;
 
-    echo $t05.'<br/>'; //t0.5
-    echo $t1; //t1
+    $array=array();
+    $array = array('t05' => $t05,'t1' => $t1);
+    /*echo $t05.'<br/>'; //t0.5
+    echo $t1; //t1*/
+    die(json_encode($array));
 }
 
 
@@ -213,7 +215,8 @@ $nearest = array_numeric_sorted_nearest($test, 8256);
 
 
 if(isset($_POST['l125w'])){
-    $ae = $_POST['Ae']; //Ae
+
+        $ae = $_POST['Ae']; //Ae
     $larea = $_POST['la']; //louver area
     $hs = $_POST['horz']; //Horizontal Separation
     $width = $_POST['wid']; // width 
@@ -261,10 +264,21 @@ if(isset($_POST['l125w'])){
     $loss = $rpwrloss*($dfac**2);  // Actual power loss
     $t05 = $k*$d*($loss**0.715); // t05
     $t1 = $t05*$c2; //t1
+
+    /*
+    
     echo $t05.'<br/>'; //t0.5
     echo $t1; //t1
+    */
+
+    $array=array();
+    $array = array('t05' => $t05,'t1' => $t1);
+    die(json_encode($array));
+
+
     }    
 }
+
 if(isset($_POST['h125w'])){
     $ae = $_POST['Ae']; //Ae
     $width = $_POST['wid']; // width 
@@ -281,7 +295,13 @@ if(isset($_POST['h125w'])){
 
     $t05 = $k*1*($loss**0.804);
     $t1 = $t05*$c;
-    echo $t05."<br/>".$t1."<br/>";
+    
+    $array=array();
+    $array = array('t05' => $t05,'t1' => $t1);
+    die(json_encode($array));
+
+
+    //echo $t05."<br/>".$t1."<br/>";
 
 }
 

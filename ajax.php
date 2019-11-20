@@ -73,6 +73,18 @@ if (isset($_POST['usrtableload'])){ // IT-home.php - users table
     die(json_encode($array));
 }
 
+if(isset($_POST['geartableload'])){ // IT-home.php - users table 
+    $sql = $conn->query("SELECT `g_mnf`, `g_type`, `g_range`, `g_model`, `g_ratedi`, `g_powerloss` FROM `gears` ORDER BY `g_mnf` ASC");
+    $array=array();
+    while ($row = $sql->fetch_assoc()) {
+            array_push($array,$row['g_mnf']);              
+            array_push($array,$row['g_model']);
+            array_push($array,$row['g_type']);
+    }
+    die(json_encode($array));
+}
+
+
 if (isset($_POST['neweng'])){
 
     $name=$_POST['engname'];

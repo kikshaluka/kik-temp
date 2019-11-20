@@ -1,6 +1,14 @@
 <?php
 
+session_start();
 include_once('conn.php');
+
+if(!isset($_SESSION['name'])){
+  header("Location: http://localhost/kik-heat/login.php"); 
+}
+
+
+
 
 ?>
 <!DOCTYPE html>
@@ -12,6 +20,7 @@ include_once('conn.php');
   <link rel="stylesheet" href="style/style.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body onload="startup()">
@@ -535,6 +544,7 @@ function calcutaion(){  //Ae Calculation
           dataType:'json',
           success: function calcutaion (response) {
             document.getElementById('Ae').value = response['Ae'].toFixed(2);
+            ef_cooling();
           }
         });
         ef_cooling();
@@ -991,7 +1001,7 @@ function ef_cooling(){ //t0.5 calculation
           },
           dataType:'json',
           success: function ef_cooling (response) { 
-            document.getElementById("bbploss").value=response["sum"];         
+            alert(response["t05"]);           
           }
         });
     }
@@ -1015,7 +1025,8 @@ function ef_cooling(){ //t0.5 calculation
           },
           dataType:'json',
           success: function ef_cooling (response) { 
-            document.getElementById("bbploss").value = response["sum"];         
+            alert(response["t05"]);         
+
           }
         });
   }
@@ -1035,7 +1046,7 @@ function ef_cooling(){ //t0.5 calculation
           },
           dataType:'json',
           success: function ef_cooling (response) { 
-            document.getElementById("bbploss").value = response["sum"];         
+            alert(response["t05"]);           
           }
         });
   }
