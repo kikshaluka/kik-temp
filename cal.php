@@ -172,7 +172,7 @@ if(isset($_POST['l125wo'])){
     $wFactor = $_POST['wf']; // width factor
     $depth = $_POST['dp']; // Depth
     $rpwrloss = $_POST['pwrloss']; //row power loss
-    $Ae = $_POST['ae'];
+    $Ae = $_POST['Ae'];
     $hs = $_POST['horz']; // horizontal separation
     $dfac = $_POST['dfac']; // demand factor
 

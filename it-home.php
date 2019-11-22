@@ -18,17 +18,15 @@
 <div class="container">
   <div class="btn-group">
     <button type="button" class="btn btn-primary" value="u" onclick="clickevent(this.value)">User Control</button>
-   
-    <div class="btn-group">
+  <div class="btn-group">
     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
        Item Managment
     </button>
-    <div class="dropdown-menu">
+  <div class="dropdown-menu">
     <button type="button" class="btn btn-primary" value="g" onclick="clickevent(this.value)">Gear </button>
-    </div>
   </div>
-  <button type="button" class="btn btn-primary" value="o" onclick="clickevent(this.value)">Orders</button>
-    
+  </div>
+    <button type="button" class="btn btn-primary" value="o" onclick="clickevent(this.value)">Orders</button>
   </div>
 </div>
 
@@ -94,7 +92,7 @@ function usertableload(){ //user table
           data:
           {
             usrtableload: "utb"
-            },
+          },
           dataType:'json',
           success: function usertableload (response) {
               $("#onetable tr").remove();
@@ -134,7 +132,7 @@ function geartableload(){ //item load table
           data:
           {
             geartableload: "gtb"
-            },
+          },
           dataType:'json',
           success: function geartableload (response) {
               $("#onetable tr").remove();
@@ -168,11 +166,6 @@ function geartableload(){ //item load table
           }
         });
 }
-
-
-
-
-
 
 function addnewuser(empno,name,pass){ // add new engineer 
   var empno = document.getElementById(empno).value;

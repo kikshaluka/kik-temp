@@ -3,51 +3,73 @@
 session_start();
 include_once('conn.php');
 
+
+
 if(!isset($_SESSION['name'])){
-  header("Location: http://localhost/kik-heat/login.php"); 
+  header("Location: http://localhost/kik-heat/index.php"); 
 }
-
-
-
+else{
+  $name=$_SESSION['name'];
+}
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Design | Home</title>
+  <style>
+    font{
+      font-size: 12px;
+    }
+  </style>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style/style.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="style/style.css">
 </head>
 <body onload="startup()">
 
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand"><?php echo "$name"?></a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="logout.php"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+
 <div class="container">
-  <h3>Heat Tempreture Rise Calculator</h3>
-  <div class="row">
+<div class="row">
   <div class="col-lg-6">
   <form class="form-horizontal">
   <div class="form-group">
-    <label class="control-label col-sm-3" for="csys">Cooling System:</label>
+    <label class="control-label col-sm-3" for="csys" data-toggle="tooltip" title="Enclosure Cooling method">Cooling System:</label>
     <div class="col-sm-5">
         <select class="form-control" id="csys" onchange="selFunction(this.value)">
           <option value="0">--select option--</option>
-            <option value="natural">Natural Ventilasion</option>
-            <option value="forced">Forced Ventilasion</option>
+            <option value="natural">Natural Ventilation</option>
+            <option value="forced">Forced Ventilation</option>
             <option value="air">Air Condition</option>
         </select>
     </div>
     </div> 
 
     <div class="form-group row">
-    <label class="control-label col-sm-3" for="larea">Louver Area:</label>
+    <label class="control-label col-sm-3" for="larea" data-toggle="tooltip" title="Opening to release heat to outside">Louver Area:</label>
       <div class="col-sm-3">
-        <input type="text" class="form-control" id="larea" placeholder="Louver Area" name="email" value='0'>
+        <input type="text" class="form-control" id="larea" placeholder="Louver Area" name="louver area" value='0'>
       </div>
-    <label class="control-label col-sm-2" for="loc">Location:</label>
+    <label class="control-label col-sm-2" for="loc" data-toggle="tooltip" title="Height of the place which enclosure is placed from mean sea level">Location: (MASL)</label>
       <div class="col-sm-3">
       <select class="form-control" id="loc" name="loc">
             <option value="0">-- Select Value --</option>
@@ -65,7 +87,7 @@ if(!isset($_SESSION['name'])){
   </div>
 
   <div class="form-group"> <!--Enclosure Type drop down-->
-      <label class="control-label col-sm-3" for="etype">Enclosure Type:</label>
+      <label class="control-label col-sm-3" for="etype" data-toggle="tooltip" title="enclosure type according to the opening">Enclosure Type:</label>
       <div class="col-sm-5">
         <select class="form-control" id="etype" name="etype">
             <option value="0">-- Select Value --</option>
@@ -77,7 +99,7 @@ if(!isset($_SESSION['name'])){
     </div>
 
     <div class="form-group">
-      <label class="control-label col-sm-3" for="pos">Position:</label>
+      <label class="control-label col-sm-3" for="pos" data-toggle="tooltip" title="place where louver area placed">Position:</label>
       <div class="col-sm-5">
         <select class="form-control" id="pos" name="pos">
           <option value="0">0</option>
@@ -90,23 +112,23 @@ if(!isset($_SESSION['name'])){
     <div class="panel-group form-group">
     <label class="control-label col-sm-2" for="email">Item:</label>
     <div class="panel panel-primary col-sm-6">
-      <div class="panel-heading">Dimensions</div>
-      <div class="panel-body">
-      
+      <div class="panel-heading" data-toggle="tooltip" title="Dimension details of the Enclosure">Dimensions</div>
+      <div class="panel-body"> 
       <div class="form-group">
-      <label class="control-label col-sm-3" for="dheight">Height:</label>
+      <label class="control-label col-sm-3" for="dheight" data-toggle="tooltip" title="height of the enclosure">Height:</label>
       <div class="col-sm-8">
         <input type="text" class="form-control" id="dheight" placeholder="Enter Height" name="dheight">
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-3" for="dwidth">Width:</label>
+      <label class="control-label col-sm-3" for="dwidth" data-toggle="tooltip" title="width of the enclosure">Width:</label>
       <div class="col-sm-8">
         <input type="text" class="form-control" id="dwidth" placeholder="Enter Width" name="dwidth" onkeyup="wfaccal()">
       </div>
+
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-3" for="ddepth">Depth:</label>
+      <label class="control-label col-sm-3" for="ddepth" data-toggle="tooltip" title="Depth of the enclosure">Depth:</label>
       <div class="col-sm-8">
         <input type="text" class="form-control" id="ddepth" placeholder="Enter Depth" name="ddepth">
       </div>
@@ -116,7 +138,7 @@ if(!isset($_SESSION['name'])){
     </div>
 
     <div class="form-group">
-      <label class="control-label col-sm-4" for="hseparation">Horiszontal Separation:</label>
+      <label class="control-label col-sm-4" for="hseparation" data-toggle="tooltip" title="Separations available horizontally inside the enclosure">Horizontal Separation:</label>
       <div class="col-sm-4">
       <select class="form-control" id="hseparation" name="hseparation">
             <option value="0">0</option>
@@ -138,14 +160,14 @@ if(!isset($_SESSION['name'])){
   <div class="form-group">
 
   <div class="form-group">
-    <label class="control-label col-sm-4" for="atemp">Ambient Temperature:</label>
+    <label class="control-label col-sm-4" for="atemp" data-toggle="tooltip" title="Starting temprature!" >Ambient Temperature:</label>
     <div class="col-sm-3">
       <input type="text" class="form-control" id="atemp" placeholder="Ambient Temperature" name="atemp" value="35">
     </div>
     </div> 
 
     <div class="form-group">
-    <label class="control-label col-sm-3" for="Dfactor">Demand Factor:</label>
+    <label class="control-label col-sm-3" for="Dfactor" data-toggle="tooltip" title="Demand factor!">Demand Factor:</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" id="Dfactor" placeholder="Demand Factor" name="Dfactor" value="0.85">
     </div>
@@ -154,7 +176,7 @@ if(!isset($_SESSION['name'])){
 
 
     <div class="form-group">
-    <label class="control-label col-sm-3" for="Ttemp">Target Temp:</label>
+    <label class="control-label col-sm-3" for="Ttemp" data-toggle="tooltip" title="Maximum tempreture rise of the enclosure">Target Temp:</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" id="Ttemp" placeholder="Target Temp" name="Ttemp" value='40'>
     </div>
@@ -286,9 +308,9 @@ if(!isset($_SESSION['name'])){
       <td>
         <select class="form-control" id="bbmaterial" name="bbmaterial" onchange='bbar_cal()'>
               <option value="0">-- Select Value --</option>
-              <option value="Al">Al</option>
-              <option value="Cu">Copper</option>
-              <option value="TinCu">Tin Copper</option>
+              <option value="Al">Aluminium</option>
+              <option value="Cu">Bare copper</option>
+              <option value="TinCu">Tin copper</option>
 
           </select>        
       </td>
@@ -461,8 +483,11 @@ if(!isset($_SESSION['name'])){
 
 <script>
 
+
 // Short-form of `document.ready`
 $(function(){ //Hide all the divs on start
+
+     $('[data-toggle="tooltip"]').tooltip(); 
     $("#natural").hide(); 
     $("#forced").hide();
     $("#air").hide();
@@ -871,7 +896,7 @@ function bbar_cal(){ // bus bar resistance calculator
           },
           dataType:'json',
           success: function bbar_cal (response) { 
-            document.getElementById("bbploss").value=response["sum"];         
+            document.getElementById("bbploss").value=response["sum"];        
           }
         });
   }
@@ -885,7 +910,7 @@ ploss_calc();
 }
 
 function pcable_tableload(){ //power cable loss to table
-  var pc_ploss = $('#pc_ploss').val();
+  var pc_ploss = $('#pc_ploss').val()
   var newrow = '<tr><td>power cable</td><td>' + pc_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="prow(this)" >Delete</button></td></tr>';
   $('#rcsumm tr:last').after(newrow);
   ploss_calc();
