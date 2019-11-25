@@ -36,17 +36,25 @@ else{
 <body onload="startup()">
 
 
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand"><?php echo "$name"?></a>
-    </div>
-    <ul class="nav navbar-nav navbar-right">
-      <li><a href="logout.php"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
-    </ul>
-  </div>
-</nav>
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a href="#" class="navbar-brand"><?php echo "$name"?></a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav">
+                <a href="#" class="nav-item nav-link active">Home</a>
+                <a href="#" class="nav-item nav-link">Profile</a>
+                <a href="#" class="nav-item nav-link">Messages</a>
+                <a href="#" class="nav-item nav-link disabled" tabindex="-1">Reports</a>
+            </div>
+            <div class="navbar-nav ml-auto">
+            <span class="glyphicon glyphicon-log-in"></span>
+                <a href="logout.php" class="nav-item nav-link">Login</a>
+            </div>
+        </div>
+    </nav>
 
 <div class="container">
 <div class="row">
@@ -468,8 +476,7 @@ else{
         <th>Power Loss</th>
       </tr>
     </thead>
-    <tbody>
-     
+    <tbody> 
     </tbody>
   </table>
   <b><span>Raw Power Loss : </span><span id="total_sum_value"></span></b> <!--total power loss cal-->
@@ -482,7 +489,6 @@ else{
 </body>
 
 <script>
-
 
 // Short-form of `document.ready`
 $(function(){ //Hide all the divs on start
@@ -499,11 +505,9 @@ $(function(){ //Hide all the divs on start
 let prices = {"Free standing panel":[{value:"Seperated",desc:"seperated"},{value:"Wall attached",desc:"Wall attached"}],
               "Free standing cubicle":[{value:"First / Last Separated",desc:"First / Last Separated"},{value:"First / Last Wall Attached",desc:"First / Last Wall Attached"},{value:"Central Seperated",desc:"Central Seperated"},{value:"Central Wall Attached",desc:"Central Wall Attached"}],
               "Wall Mounted":[{value:"Surface Mounted",desc:"Surface Mounted"},{value:"Flush Mounted",desc:"Flush Mounted"}]}
-
   document.getElementsByName('etype')[0].addEventListener('change', function(e) {
   document.getElementsByName('pos')[0].innerHTML = prices[this.value].reduce((acc, elem) => `${acc}<option value="${elem.value}">${elem.desc}</option>`, "");
 });
-
 
 function myFunction(one,two,three) { // Div selection to hide
   var x = document.getElementById(one);
@@ -520,7 +524,6 @@ function myFunction(one,two,three) { // Div selection to hide
     z.style.display = "none";
     x.style.display = "block";
   }} 
-
 
   function selFunction(name) { // //Div box selection function
   var selection=name;
@@ -662,8 +665,7 @@ function grange_load(val){ //gear range loader
           {
             typeg: val,
             mnfg: gmnf
-
-            },
+          },
           dataType:'json',
           success: function grange_load (response) {
             $("#grange").append(new Option('--select option--', '0'));
@@ -800,13 +802,7 @@ function pctype_load(val){ // power cable types loader
 
   pcable_add_dis();
 document.getElementById("pc_type").options.length = 0;
-/*
-var pc_size = document.getElementById("pc_size").value = '';
-var pc_runs = document.getElementById("pc_runs").value = '';
-var pc_length = document.getElementById("pc_length").value = '';
-var pc_current = document.getElementById("pc_current").value = '';
-var pc_ploss = document.getElementById("pc_ploss").value = '';
-*/
+
 
 $.ajax({
         type: 'POST',
@@ -904,6 +900,15 @@ function bbar_cal(){ // bus bar resistance calculator
 function busbar_tableload(){ //busbar power loss to table
 
 var bbploss = $('#bbploss').val();
+document.getElementById("bbwidth").value = "";
+document.getElementById("bbthick").value = "";
+document.getElementById("bbruns").value = "";
+document.getElementById("bblength").value = "";
+document.getElementById("bbcurrent").value = "";
+document.getElementById("bbploss").value = "";
+document.getElementById("bbadd").disabled = true; 
+
+
 var newrow = '<tr><td>bus bar</td><td>' + bbploss + '</td><td><button type="button" class="btn btn-danger" onclick="prow(this)" >Delete</button></td></tr>';
 $('#rcsumm tr:last').after(newrow);
 ploss_calc();
