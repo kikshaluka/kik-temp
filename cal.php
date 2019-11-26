@@ -190,8 +190,7 @@ if(isset($_POST['l125wo'])){
         $a=$row['a'];
         $b=$row['b'];
         $c=$row['c'];
-        //echo $a.$b.$c;
-       
+        //echo $a.$b.$c;     
     }
     $ao = (($width/$wFactor)*$depth)/(1000*1000); // top surface
     $f = (($height/1000)**1.35)/$ao; 
@@ -207,16 +206,13 @@ if(isset($_POST['l125wo'])){
     die(json_encode($array));
 }
 
-
 $test = Array(5,2,8,3,9,12,20,52100,52460,62000);
 sort($test);
 $nearest = array_numeric_sorted_nearest($test, 8256);
 
-
-
 if(isset($_POST['l125w'])){
 
-        $ae = $_POST['Ae']; //Ae
+    $ae = $_POST['Ae']; //Ae
     $larea = $_POST['la']; //louver area
     $hs = $_POST['horz']; //Horizontal Separation
     $width = $_POST['wid']; // width 

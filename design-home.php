@@ -316,7 +316,7 @@ else{
     <tr>
       <th scope="row">></th>
       <td>
-        <input type="text" class="form-control" id="bbname" placeholder="Bus Bar Name" name="bbname">
+        <input type="text" class="form-control" id="bbname" placeholder="Bus Bar Name" name="bbname" onkeyup='bbar_cal()'>
       </td>
       <td>
         <select class="form-control" id="bbmaterial" name="bbmaterial" onchange='bbar_cal()'>
@@ -367,7 +367,7 @@ else{
     <tbody> 
     </tbody>
   </table>
-
+  <b><span>Power Loss : </span><span id="bb_sum_value">0</span></b> <!--total power loss cal-->
 </div>
 <!-- power cables-->
 
@@ -392,7 +392,7 @@ else{
     <tr>
       <th scope="row">></th>
       <td>
-        <input type="text" class="form-control" id="pc_name" placeholder="Cable Name" name="pc_name">
+        <input type="text" class="form-control" id="pc_name" placeholder="Cable Name" name="pc_name" onkeyup='pcable_cal()'>
       </td>
       <td>
         <select class="form-control" id="pc_mat" name="pc_mat" onchange="pctype_load(this.value)">
@@ -443,6 +443,7 @@ else{
     <tbody> 
     </tbody>
   </table>
+  <b><span>Power Loss : </span><span id="pc_sum_value">0</span></b> <!--total power loss cal-->
 </div>
 
 <!--power cables ends here-->
@@ -521,7 +522,7 @@ else{
     <tbody> 
     </tbody>
   </table>
-
+  <b><span>Power Loss : </span><span id="sg_sum_value">0</span></b> <!--total power loss cal-->
 <!--switch gear separate table load-->
 </div>
 
@@ -556,6 +557,8 @@ $(function(){ //Hide all the divs on start
     $("#forced").hide();
     $("#air").hide();
     $("#larea").prop('disabled', true);
+
+
 
 });
 
@@ -859,7 +862,7 @@ function pcmaterial_load(){ // cable material loader - startup
 function pctype_load(val){ // power cable types loader
 
   pcable_add_dis();
-document.getElementById("pc_type").options.length = 0;
+  document.getElementById("pc_type").options.length = 0;
 
 
 $.ajax({
@@ -962,6 +965,68 @@ function prow(ele){ //  power loss row deletion
   ploss_calc();
 }
 
+ function bbdrow(ele) { //bus bar delete row
+  row = ele.parentNode.parentNode.rowIndex;
+  document.getElementById("bbsumm").deleteRow(row);
+  bbploss_calc();
+ }
+ 
+ function pcdrow(ele) { //power cable delete row
+  row = ele.parentNode.parentNode.rowIndex;
+  document.getElementById("pcsumm").deleteRow(row);
+  pcploss_calc();
+ }
+
+ function sgdrow(ele) { //switch gear delete row
+  row = ele.parentNode.parentNode.rowIndex;
+  document.getElementById("sgsumm").deleteRow(row);
+  sgploss_calc();
+ }
+
+
+function bbploss_calc(){ //bus bar power loss calc
+  var table = document.getElementById("bbsumm"), sumVal = 0;
+    for(var i = 1; i < table.rows.length; i++)
+    {
+      sumVal = sumVal + parseFloat(table.rows[i].cells[1].innerHTML);
+    }
+    document.getElementById("bb_sum_value").innerHTML = sumVal;
+    t_ploss_calc();
+   
+}
+
+function pcploss_calc(){ // power cable power loss
+    var table = document.getElementById("pcsumm"), sumVal = 0;
+    for(var i = 1; i < table.rows.length; i++)
+    {
+      sumVal = sumVal + parseFloat(table.rows[i].cells[1].innerHTML);
+    }
+    document.getElementById("pc_sum_value").innerHTML = sumVal;
+    t_ploss_calc();
+}
+
+function sgploss_calc(){ // switch gear power loss
+  var table = document.getElementById("sgsumm"), sumVal = 0;
+    for(var i = 1; i < table.rows.length; i++)
+    {
+      sumVal = sumVal + parseFloat(table.rows[i].cells[1].innerHTML);
+    }
+    document.getElementById("sg_sum_value").innerHTML = sumVal;
+    t_ploss_calc();
+}
+
+function t_ploss_calc(){ // tottal power loss calculation
+
+    bb = document.getElementById("bb_sum_value").innerHTML;
+    pc = document.getElementById("pc_sum_value").innerHTML;
+    sg = document.getElementById("sg_sum_value").innerHTML;
+
+  var tot = parseFloat(bb) + parseFloat(pc) + parseFloat(sg);
+  document.getElementById("total_sum_value").innerHTML = tot;
+
+}
+
+
 function ploss_calc(){ //total power loss calculation
   var table = document.getElementById("rcsumm"), sumVal = 0;
     for(var i = 1; i < table.rows.length; i++)
@@ -1033,7 +1098,7 @@ function bbar_s_table(){ //bus bar separate table load
   var bbname = $('#bbname').val();;
  
 
-  var newrow = '<tr><td>'+bbname+'</td><td>' + bbploss + '</td><td><button type="button" class="btn btn-danger" >Delete</button><button type="button" class="btn btn-warning" >Update</button></td></tr>';
+  var newrow = '<tr><td>'+bbname+'</td><td>' + bbploss + '</td><td><button type="button" class="btn btn-danger" onclick="bbdrow(this)">Delete</button></td></tr>';
   $('#bbsumm tr:last').after(newrow);
 
   document.getElementById("bbname").value = "";
@@ -1044,7 +1109,7 @@ function bbar_s_table(){ //bus bar separate table load
   document.getElementById("bbcurrent").value = "";
   document.getElementById("bbadd").disabled = true;
 
-  //ploss_calc();
+  bbploss_calc();
 
 }
 
@@ -1053,7 +1118,7 @@ function pcable_s_table(){
 
   var pc_ploss = $('#pc_ploss').val();
   var pc_name = $('#pc_name').val();;
-  var newrow = '<tr><td>'+pc_name+'</td><td>' + pc_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="prow(this)" >Delete</button><button type="button" class="btn btn-warning">Update</button></td></tr>';
+  var newrow = '<tr><td>'+pc_name+'</td><td>' + pc_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="pcdrow(this)" >Delete</button></td></tr>';
   $('#pcsumm tr:last').after(newrow);
 
   document.getElementById("pc_name").value = "";
@@ -1063,7 +1128,7 @@ function pcable_s_table(){
   document.getElementById("pc_current").value = "";
   document.getElementById("pcadd").disabled = true;
 
-  ploss_calc();
+  pcploss_calc()
 
 
 }
@@ -1077,9 +1142,9 @@ document.getElementById("g_qty").value = "";
 document.getElementById("sgadd").disabled = true; 
 
 var name = $('#gmnf').val() +" "+$('#gtype').val()+" "+ $('#gmodel').val();
-var newrow = '<tr><td>'+ name +'</td><td>' + sg_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="prow(this)" >Delete</button><button type="button" class="btn btn-warning" >Update</button></td></tr>';
+var newrow = '<tr><td>'+ name +'</td><td>' + sg_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="sgdrow()" >Delete</button></td></tr>';
 $('#sgsumm tr:last').after(newrow);
-//ploss_calc();
+sgploss_calc();
 }
 
 
