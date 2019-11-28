@@ -67,7 +67,6 @@ else{
           <option value="0">--select option--</option>
             <option value="natural">Natural Ventilation</option>
             <option value="forced">Forced Ventilation</option>
-            <option value="air">Air Condition</option>
         </select>
     </div>
     </div> 
@@ -191,18 +190,6 @@ else{
     </div>
     </div>
 
-    <label class="control-label col-sm-3" for="width Factor">Width Factor:</label>
-    <div class="col-sm-3">
-      <input type="text" class="form-control" id="wFactor" placeholder="Width Factor" name="width Factor">
-    </div>
-    </div> 
-
-    <div class="form-group">
-    <label class="control-label col-sm-3" for="Ae">Ae:</label>
-    <div class="col-sm-3">
-      <input type="text" class="form-control" id="Ae" placeholder="Ae" name="Ae">
-    </div>
-    </div>
 
     <div class="panel-group form-group" id="natural">
     <label class="control-label col-sm-2" for="email">Power:</label>
@@ -323,7 +310,6 @@ else{
               <option value="0">-- Select Value --</option>
               <option value="Al">Aluminium</option>
               <option value="Cu">Bare copper</option>
-              <option value="TinCu">Tin copper</option>
 
           </select>        
       </td>
@@ -359,9 +345,15 @@ else{
 <table class="table" id="bbsumm">
     <thead class="thead-dark">
       <tr>
-        <th>Name</th>
-        <th>Power Loss</th>
-        <th>Action</th>
+      <th scope="col">Description</th>
+      <th scope="col">Material</th>
+      <th scope="col">Width (mm)</th>
+      <th scope="col">Thinckness (mm)</th>
+      <th scope="col">Runs</th>
+      <th scope="col">Length (m)</th>
+      <th scope="col">Current (A)</th>
+      <th scope="col">Power Loss (W)</th>
+      <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody> 
@@ -435,9 +427,15 @@ else{
 <table class="table" id="pcsumm">
     <thead class="thead-dark">
       <tr>
-        <th>Name</th>
-        <th>Power Loss</th>
-        <th>Action</th>
+      <th scope="col">Description</th>
+      <th scope="col">Material</th>
+      <th scope="col">Type</th>
+      <th scope="col">Size(mm<sup>2</sup>)</th>
+      <th scope="col">Runs</th>
+      <th scope="col">Length (m)</th>
+      <th scope="col">Current (A)</th>
+      <th scope="col">Power Loss (W)</th>
+      <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody> 
@@ -514,9 +512,14 @@ else{
 <table class="table" id="sgsumm">
     <thead class="thead-dark">
       <tr>
-        <th>Name</th>
-        <th>Power Loss</th>
-        <th>Action</th>
+      <th scope="col">Manufacturer</th>
+      <th scope="col">Type</th>
+      <th scope="col">Range</th>
+      <th scope="col">Model</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Rating (A)</th>
+      <th scope="col">Power Loss (W)</th>
+      <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody> 
@@ -982,15 +985,57 @@ function prow(ele){ //  power loss row deletion
   document.getElementById("sgsumm").deleteRow(row);
   sgploss_calc();
  }
+ 
+ function bburow(ele){ //bus bar individual table update
+  row = ele.parentNode.parentNode.rowIndex;
+  var theTbl = document.getElementById('bbsumm');
+  document.getElementById('bbname').value = theTbl.rows[row].cells[0].innerHTML;
+  document.getElementById('bbmaterial').value = theTbl.rows[row].cells[1].innerHTML;
+  document.getElementById('bbwidth').value = theTbl.rows[row].cells[2].innerHTML;
+  document.getElementById('bbthick').value = theTbl.rows[row].cells[3].innerHTML;
+  document.getElementById('bbruns').value = theTbl.rows[row].cells[4].innerHTML;
+  document.getElementById('bblength').value = theTbl.rows[row].cells[5].innerHTML;
+  document.getElementById('bbcurrent').value = theTbl.rows[row].cells[6].innerHTML;
+  document.getElementById('bbploss').value = theTbl.rows[row].cells[7].innerHTML;
+  bbdrow(ele);
+ 
+ }
+
+ function pcurow(ele){ //power cable individual table update
+  row = ele.parentNode.parentNode.rowIndex;
+  var theTbl = document.getElementById('pcsumm');
+  document.getElementById('pc_name').value = theTbl.rows[row].cells[0].innerHTML;
+  document.getElementById('pc_mat').value = theTbl.rows[row].cells[1].innerHTML;
+  document.getElementById('pc_type').value = theTbl.rows[row].cells[2].innerHTML;
+  document.getElementById('pc_size').value = theTbl.rows[row].cells[3].innerHTML;
+  document.getElementById('pc_runs').value = theTbl.rows[row].cells[4].innerHTML;
+  document.getElementById('pc_length').value = theTbl.rows[row].cells[5].innerHTML;
+  document.getElementById('pc_current').value = theTbl.rows[row].cells[6].innerHTML;
+  document.getElementById('pc_ploss').value = theTbl.rows[row].cells[7].innerHTML;
+  pcdrow(ele);
+ }
+
+ function sgurow(ele){ //switchgear individual table update
+  row = ele.parentNode.parentNode.rowIndex;
+  var theTbl = document.getElementById('sgsumm');
+  document.getElementById('gmnf').value = theTbl.rows[row].cells[0].innerHTML;
+  document.getElementById('gtype').value = theTbl.rows[row].cells[1].innerHTML;
+  document.getElementById('grange').value = theTbl.rows[row].cells[2].innerHTML;
+  document.getElementById('gmodel').value = theTbl.rows[row].cells[3].innerHTML;
+  document.getElementById('g_qty').value = theTbl.rows[row].cells[4].innerHTML;
+  document.getElementById('g_power').value = theTbl.rows[row].cells[5].innerHTML;
+  document.getElementById('pwrloss').value = theTbl.rows[row].cells[6].innerHTML;
+  sgdrow(ele);
+ }
 
 
 function bbploss_calc(){ //bus bar power loss calc
   var table = document.getElementById("bbsumm"), sumVal = 0;
     for(var i = 1; i < table.rows.length; i++)
     {
-      sumVal = sumVal + parseFloat(table.rows[i].cells[1].innerHTML);
+      sumVal = sumVal + parseFloat(table.rows[i].cells[7].innerHTML);
     }
-    document.getElementById("bb_sum_value").innerHTML = sumVal;
+    document.getElementById("bb_sum_value").innerHTML = sumVal.toFixed(2);
     t_ploss_calc();
    
 }
@@ -999,9 +1044,9 @@ function pcploss_calc(){ // power cable power loss
     var table = document.getElementById("pcsumm"), sumVal = 0;
     for(var i = 1; i < table.rows.length; i++)
     {
-      sumVal = sumVal + parseFloat(table.rows[i].cells[1].innerHTML);
+      sumVal = sumVal + parseFloat(table.rows[i].cells[7].innerHTML);
     }
-    document.getElementById("pc_sum_value").innerHTML = sumVal;
+    document.getElementById("pc_sum_value").innerHTML = sumVal.toFixed(2);
     t_ploss_calc();
 }
 
@@ -1009,20 +1054,20 @@ function sgploss_calc(){ // switch gear power loss
   var table = document.getElementById("sgsumm"), sumVal = 0;
     for(var i = 1; i < table.rows.length; i++)
     {
-      sumVal = sumVal + parseFloat(table.rows[i].cells[1].innerHTML);
+      sumVal = sumVal + parseFloat(table.rows[i].cells[6].innerHTML);
     }
-    document.getElementById("sg_sum_value").innerHTML = sumVal;
+    document.getElementById("sg_sum_value").innerHTML = sumVal.toFixed(2);
     t_ploss_calc();
 }
 
-function t_ploss_calc(){ // tottal power loss calculation
+function t_ploss_calc(){ // total power loss calculation
 
     bb = document.getElementById("bb_sum_value").innerHTML;
     pc = document.getElementById("pc_sum_value").innerHTML;
     sg = document.getElementById("sg_sum_value").innerHTML;
 
   var tot = parseFloat(bb) + parseFloat(pc) + parseFloat(sg);
-  document.getElementById("total_sum_value").innerHTML = tot;
+  document.getElementById("total_sum_value").innerHTML = tot.toFixed(2);
 
 }
 
@@ -1095,10 +1140,16 @@ function bbar_add_dis(){ //bus bar add buton disable
 function bbar_s_table(){ //bus bar separate table load
 
   var bbploss = $('#bbploss').val();
-  var bbname = $('#bbname').val();;
+  var bbname = $('#bbname').val();
+  var bbmaterial = $('#bbmaterial').val();
+  var bbwidth = $('#bbwidth').val();
+  var bbthick = $('#bbthick').val();
+  var bbruns = $('#bbruns').val();
+  var bblength = $('#bblength').val();
+  var bbcurrent = $('#bbcurrent').val();
  
 
-  var newrow = '<tr><td>'+bbname+'</td><td>' + bbploss + '</td><td><button type="button" class="btn btn-danger" onclick="bbdrow(this)">Delete</button></td></tr>';
+  var newrow = '<tr><td>'+bbname+'</td><td>'+bbmaterial+'</td><td>'+bbwidth+'</td><td>'+bbthick+'</td><td>'+bbruns+'</td><td>'+bblength+'</td><td>'+bbcurrent+'</td><td>' + bbploss + '</td><td><button type="button" class="btn btn-danger" onclick="bbdrow(this)">Delete</button><button type="button" class="btn btn-warning" onclick="bburow(this)">Update</button></td></tr>';
   $('#bbsumm tr:last').after(newrow);
 
   document.getElementById("bbname").value = "";
@@ -1107,6 +1158,7 @@ function bbar_s_table(){ //bus bar separate table load
   document.getElementById("bbruns").value = "";
   document.getElementById("bblength").value = "";
   document.getElementById("bbcurrent").value = "";
+  document.getElementById("bbploss").value = "";
   document.getElementById("bbadd").disabled = true;
 
   bbploss_calc();
@@ -1117,8 +1169,14 @@ function bbar_s_table(){ //bus bar separate table load
 function pcable_s_table(){
 
   var pc_ploss = $('#pc_ploss').val();
-  var pc_name = $('#pc_name').val();;
-  var newrow = '<tr><td>'+pc_name+'</td><td>' + pc_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="pcdrow(this)" >Delete</button></td></tr>';
+  var pc_mat = $('#pc_mat').val();
+  var pc_name = $('#pc_name').val();
+  var pc_type = $('#pc_type').val();
+  var pc_size = $('#pc_size').val();
+  var pc_runs = $('#pc_runs').val();
+  var pc_length = $('#pc_length').val();
+  var pc_current = $('#pc_current').val();
+  var newrow = '<tr><td>'+pc_name+'</td><td>'+pc_mat+'</td><td>'+pc_type+'</td><td>'+pc_size+'</td><td>'+pc_runs+'</td><td>'+pc_length+'</td><td>'+pc_current+'</td><td>' + pc_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="pcdrow(this)" >Delete</button><button type="button" class="btn btn-warning" onclick="pcurow(this)">Update</button></td></tr>';
   $('#pcsumm tr:last').after(newrow);
 
   document.getElementById("pc_name").value = "";
@@ -1137,13 +1195,22 @@ function sgear_s_table(){
   // switch gear separate table load
 
 var sg_ploss = $('#pwrloss').val();
+var sg_mnf = $('#gmnf').val();
+var sg_type = $('#gtype').val();
+var sg_model = $('#gmodel').val();
+var sg_range = $('#grange').val();
+var sg_qty = $('#g_qty').val();
+var sg_rate = $('#g_power').val();
+var sg_ploss = $('#pwrloss').val();
 
 document.getElementById("g_qty").value = "";
 document.getElementById("sgadd").disabled = true; 
 
-var name = $('#gmnf').val() +" "+$('#gtype').val()+" "+ $('#gmodel').val();
-var newrow = '<tr><td>'+ name +'</td><td>' + sg_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="sgdrow()" >Delete</button></td></tr>';
+
+var newrow = '<tr><td>'+ sg_mnf +'</td><td>'+ sg_type +'</td><td>'+ sg_range +'</td><td>'+ sg_model +'</td><td>'+ sg_qty +'</td><td>' + sg_rate + '</td><td>' + sg_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="sgdrow()" >Delete</button><button type="button" class="btn btn-warning" onclick="sgurow(this)">Update</button></td></tr>';
 $('#sgsumm tr:last').after(newrow);
+document.getElementById("g_qty").value = "";
+document.getElementById("sgadd").disabled = true; 
 sgploss_calc();
 }
 

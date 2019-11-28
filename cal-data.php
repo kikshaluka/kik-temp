@@ -89,6 +89,7 @@ if (isset($_POST['pwr'])){ // power loss
     while ($row = $sql->fetch_assoc()) {
         $pwr_less=floatval($row['g_powerloss']);
         $p_loss=$pwr_less*$pwr;
+        $p_loss = number_format($p_loss, 2, '.', '');
         $array = array(
             'p_loss' => $p_loss
         );
@@ -131,6 +132,7 @@ if (isset($_POST['pc_cal'])){ // power cable calculation
     while ($row = $sql->fetch_assoc()) {
         $res=$row['resistance'];   
         $sum = (($res/1000)* $pc_length/$pc_size) * pow($pc_curr,2) * $pc_runs;
+        $sum = number_format($sum, 2, '.', '');
         $array = array(
             
             'sum' => $sum,
@@ -168,6 +170,7 @@ if (isset($_POST['bb_cal'])){ // bus bar calculation
     }
         
         $sum = (($res/1000)*$blen)/($bwid*$bthk*$brun)*pow($bcurr,2);
+        $sum = number_format($sum, 2, '.', '');
         $array = array(
             
             'sum' => $sum,
