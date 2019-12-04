@@ -421,21 +421,18 @@ else{
 </table>
 
 <!-- power cable separate table load-->
-
-
-
 <table class="table" id="pcsumm">
     <thead class="thead-dark">
       <tr>
-      <th scope="col">Description</th>
-      <th scope="col">Material</th>
-      <th scope="col">Type</th>
-      <th scope="col">Size(mm<sup>2</sup>)</th>
-      <th scope="col">Runs</th>
-      <th scope="col">Length (m)</th>
-      <th scope="col">Current (A)</th>
-      <th scope="col">Power Loss (W)</th>
-      <th scope="col">Action</th>
+        <th scope="col">Description</th>
+        <th scope="col">Material</th>
+        <th scope="col">Type</th>
+        <th scope="col">Size(mm<sup>2</sup>)</th>
+        <th scope="col">Runs</th>
+        <th scope="col">Length (m)</th>
+        <th scope="col">Current (A)</th>
+        <th scope="col">Power Loss (W)</th>
+        <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody> 
@@ -529,6 +526,76 @@ else{
 <!--switch gear separate table load-->
 </div>
 
+
+
+<!--custom switch gear addition-->
+
+<!--switch gear-->
+<div class="panel panel-primary">
+  <div class="panel-heading">Custom Switch Gear</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Description</th>
+      <th scope="col">Manufacturer</th>
+      <th scope="col">Model</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Rating (A)</th>
+      <th scope="col">Power Loss (W)</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">></th>
+      <td>Switch gear</td>
+      <td>
+        <input type='text' class="form-control" id="cusmnf" name="gmnf" placeholder='Manufacturer' >      
+      </td>
+      <td>
+      <input type='text' class="form-control" id="cusmodel" name="gmodel" placeholder='Model Name'  >
+      </td>
+      <td>
+        <input type="text" class="form-control" id="cus_qty" placeholder="Quantity" name="g_qty" >
+      </td>
+      <td>
+        <input type="text" class="form-control" placeholder="Rating"  name="g_power" id='g_power'>
+      </td>
+      <td>
+        <input type="text" class="form-control" placeholder="Power Loss" id="pwrloss">
+      </td>
+      <td>
+        <button type="button" class="btn btn-primary" id='sgadd' disabled>Add</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!--switch gear separate table load-->
+
+<table class="table" id="csgsumm">
+    <thead class="thead-dark">
+      <tr>
+      <th scope="col">Manufacturer</th>
+      <th scope="col">Model</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Rating (A)</th>
+      <th scope="col">Power Loss (W)</th>
+      <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody> 
+    </tbody>
+  </table>
+  <b><span>Power Loss : </span><span id="c_sg_sum_value">0</span></b> <!--total power loss cal-->
+<!--switch gear separate table load-->
+</div>
+<!--custom sg ends here-->
+
+
+
+
 <!--rated current summery-->
 <table class="table" id="rcsumm">
     <thead class="thead-dark">
@@ -564,6 +631,7 @@ $(function(){ //Hide all the divs on start
 
 
 });
+
 
 // Position Type change according Enclosure Type
 let prices = {"Free standing panel":[{value:"Seperated",desc:"seperated"},{value:"Wall attached",desc:"Wall attached"}],
@@ -810,7 +878,6 @@ function pwrloss(val){ //power gear power loss calculation
 
   sgear_add_dis(); // switch gear add button disable
 
-
   var mnfg = document.getElementById("gmnf").value;
   var typeg = document.getElementById("gtype").value;
   var rangeg = document.getElementById("grange").value;
@@ -829,7 +896,7 @@ function pwrloss(val){ //power gear power loss calculation
           },
           dataType:'json',
           success: function pwrloss (response) {
-            document.getElementById("pwrloss").value=response["p_loss"];
+            document.getElementById("pwrloss").value = response["p_loss"];
             
           }
         });
@@ -986,6 +1053,12 @@ function prow(ele){ //  power loss row deletion
   sgploss_calc();
  }
  
+ function csgdrow(ele) { // custom switch gear delete row
+  row = ele.parentNode.parentNode.rowIndex;
+  document.getElementById("csgsumm").deleteRow(row);
+  csgploss_calc();
+ }
+
  function bburow(ele){ //bus bar individual table update
   row = ele.parentNode.parentNode.rowIndex;
   var theTbl = document.getElementById('bbsumm');
@@ -1060,6 +1133,16 @@ function sgploss_calc(){ // switch gear power loss
     t_ploss_calc();
 }
 
+function csgploss_calc(){ // switch gear power loss
+  var table = document.getElementById("csgsumm"), sumVal = 0;
+    for(var i = 1; i < table.rows.length; i++)
+    {
+      sumVal = sumVal + parseFloat(table.rows[i].cells[6].innerHTML);
+    }
+    document.getElementById("c_sg_sum_value").innerHTML = sumVal.toFixed(2);
+    t_ploss_calc();
+}
+
 function t_ploss_calc(){ // total power loss calculation
 
     bb = document.getElementById("bb_sum_value").innerHTML;
@@ -1071,8 +1154,7 @@ function t_ploss_calc(){ // total power loss calculation
 
 }
 
-
-function ploss_calc(){ //total power loss calculation
+function ploss_calc(){ //sample total power loss calculation
   var table = document.getElementById("rcsumm"), sumVal = 0;
     for(var i = 1; i < table.rows.length; i++)
     {
@@ -1148,7 +1230,6 @@ function bbar_s_table(){ //bus bar separate table load
   var bblength = $('#bblength').val();
   var bbcurrent = $('#bbcurrent').val();
  
-
   var newrow = '<tr><td>'+bbname+'</td><td>'+bbmaterial+'</td><td>'+bbwidth+'</td><td>'+bbthick+'</td><td>'+bbruns+'</td><td>'+bblength+'</td><td>'+bbcurrent+'</td><td>' + bbploss + '</td><td><button type="button" class="btn btn-danger" onclick="bbdrow(this)">Delete</button><button type="button" class="btn btn-warning" onclick="bburow(this)">Update</button></td></tr>';
   $('#bbsumm tr:last').after(newrow);
 
@@ -1213,8 +1294,6 @@ document.getElementById("g_qty").value = "";
 document.getElementById("sgadd").disabled = true; 
 sgploss_calc();
 }
-
-
 
 function ef_cooling(){ //t0.5 calculation
         
