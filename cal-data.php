@@ -75,20 +75,20 @@ if (isset($_POST['rateg'])){ // power rate
     die(json_encode($array));
 }
 
-if (isset($_POST['pwr'])){ // power loss
+if (isset($_POST['pwr'])){    // power loss
 
-    $type=$_POST['typg'];     //power gear type
+    $type=$_POST['typg'];     // power gear type
     $mnfg=$_POST['mnfg'];     // power gear manf
-    $range=$_POST['rag'];     //power gear range
+    $range=$_POST['rag'];     // power gear range
     $model=$_POST['modelg'];  // power gear model
-    $pwr=$_POST['pwr'];       //power gear power
+    $pwr=$_POST['pwr'];       // power gear power
 
     $sql = $conn->query("SELECT g_powerloss FROM gears where g_type='$type' and g_mnf='$mnfg' and g_range='$range' and g_model='$model'");
     $array=array();
 
     while ($row = $sql->fetch_assoc()) {
         $pwr_less=floatval($row['g_powerloss']);
-        $p_loss=$pwr_less*$pwr;
+        $p_loss=($pwr_less*$pwr)*3;
         $p_loss = number_format($p_loss, 2, '.', '');
         $array = array(
             'p_loss' => $p_loss
@@ -149,8 +149,6 @@ if (isset($_POST['bb_cal'])){ // bus bar calculation
     $brun = $_POST['brun']; // bus bar runs
     $blen = $_POST['blen']; // bus bar length
     $bcurr = $_POST['bcurr']; // bus bar current
-
-
 
     $array=array();
 

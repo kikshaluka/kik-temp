@@ -25,6 +25,7 @@ else{
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -309,7 +310,7 @@ else{
         <select class="form-control" id="bbmaterial" name="bbmaterial" onchange='bbar_cal()'>
               <option value="0">-- Select Value --</option>
               <option value="Al">Aluminium</option>
-              <option value="Cu">Bare copper</option>
+              <option value="Cu">Copper</option>
 
           </select>        
       </td>
@@ -397,19 +398,26 @@ else{
           </select>
       </td>
       <td>
-        <input type="text" class="form-control" id="pc_size" placeholder="Size" name="pc_size" onkeyup='pcable_cal()'>
+        <input type="number" class="form-control" id="pc_size" placeholder="Size" name="pc_size" onkeyup='pcable_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="pc_runs" placeholder="Runs" name="pc_runs" onkeyup='pcable_cal()'>
+
+      <select class="form-control" id="pc_runs" name="pc_runs" onchange='pcable_cal();'>
+              <option value="0">-- Select Value --</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+          </select>
       </td>
       <td>
-        <input type="text" class="form-control" id="pc_length" placeholder="Length" name="pc_length" onkeyup='pcable_cal()'>
+        <input type="number" class="form-control" id="pc_length" placeholder="Length" name="pc_length" onkeyup='pcable_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="pc_current" placeholder="current" name="pc_current" onkeyup='pcable_cal()'>
+        <input type="number" class="form-control" id="pc_current" placeholder="current" name="pc_current" onkeyup='pcable_cal()'>
       </td>
       <td>
-        <input type="text" class="form-control" id="pc_ploss" placeholder="Power Loss" name="pc_ploss" disabled>
+        <input type="number" class="form-control" id="pc_ploss" placeholder="Power Loss" name="pc_ploss" disabled>
       </td>
       <td>
         <button type="button" class="btn btn-primary" id="pcadd" onclick='pcable_s_table()' disabled>Add</button>
@@ -487,7 +495,7 @@ else{
       </select> 
       </td>
       <td>
-        <input type="text" class="form-control" id="g_qty" placeholder="Quantity" name="dwidth" onkeyup='pwrloss(this.value)'>
+        <input type="number" class="form-control" id="g_qty" placeholder="Quantity" name="dwidth" onkeyup='pwrloss(this.value); return isNumberKey(event,this);'>
       </td>
       <td>
         <input type="text" class="form-control" placeholder="Rating"  name="g_power" id='g_power' disabled>
@@ -1016,7 +1024,7 @@ function bbar_cal(){ // bus bar resistance calculator
             bb_cal: 'ok',
             bmat: b_mat,  //bus bar material
             bwid: b_wid,  //bus bar width
-            bthk: b_thk,  //bus bar thick
+            bthk: b_thk,  //bus bar thickness
             brun: b_run,  //bus bar run
             blen: b_len,  //bus bar length
             bcurr: b_curr //bus bar currency
@@ -1028,6 +1036,25 @@ function bbar_cal(){ // bus bar resistance calculator
         });
   }
 
+  function isNumberKey(evt, element) { // Check whether the input is an integer
+    var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57) && !(charCode == 46 || charCode == 8))
+      return false;
+    else {
+      var len = $(element).val().length;
+      var index = $(element).val().indexOf('.');
+      if (index > 0 && charCode == 46) {
+        return false;
+      }
+      if (index > 0) {
+        var CharAfterdot = (len + 1) - index;
+        if (CharAfterdot > 1) { // char after dot is numbers after dot.
+          return false;
+        }
+      }
+    }
+    return true;
+}
 
 function prow(ele){ //  power loss row deletion
   row = ele.parentNode.parentNode.rowIndex;
