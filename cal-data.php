@@ -167,7 +167,7 @@ if (isset($_POST['bb_cal'])){ // bus bar calculation
             $res = 0;
     }
         
-        $sum = (($res/1000)*$blen)/($bwid*$bthk*$brun)*pow($bcurr,2);
+        $sum = ((($res/1000)*$blen)/($bwid*$bthk*$brun)*pow($bcurr,2))*3;
         $sum = number_format($sum, 2, '.', '');
         $array = array(
             

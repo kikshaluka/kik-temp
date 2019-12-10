@@ -45,22 +45,36 @@ else{
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav">
-                <a href="#" class="nav-item nav-link active">Home</a>
-                <a href="#" class="nav-item nav-link">Profile</a>
-                <a href="#" class="nav-item nav-link">Messages</a>
-                <a href="#" class="nav-item nav-link disabled" tabindex="-1">Reports</a>
+                <a href="#" class="nav-item nav-link active">Home</a>                
             </div>
             <div class="navbar-nav ml-auto">
-            <span class="glyphicon glyphicon-log-in"></span>
+            <a href="#" class="nav-item nav-link disabled" tabindex="-1">Reports</a>
+            <span class="glyphicon glyphicon-log-in"></span>            
                 <a href="logout.php" class="nav-item nav-link">Login</a>
             </div>
         </div>
     </nav>
 
 <div class="container">
+<div class="page-header">
+    <p>Project Reference Number : kik123</p>      
+  </div>
 <div class="row">
   <div class="col-lg-6">
   <form class="form-horizontal">
+  <div class="form-group">
+    <label class="control-label col-sm-3" for="csys" data-toggle="tooltip" title="Cubicle number">Cubicle Number:</label>
+    <div class="col-sm-5">
+        <select class="form-control" id="cnum" >
+          <option value="0">--select option--</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+    </div>
+    </div> 
+
   <div class="form-group">
     <label class="control-label col-sm-3" for="csys" data-toggle="tooltip" title="Enclosure Cooling method">Cooling System:</label>
     <div class="col-sm-5">
@@ -88,8 +102,7 @@ else{
             <option value="2000">2000</option>
             <option value="2500">2500</option>
             <option value="3000">3000</option>
-            <option value="3500">3500</option>
-            
+            <option value="3500">3500</option>    
         </select>
       </div>
   </div>
@@ -559,22 +572,22 @@ else{
       <th scope="row">></th>
       <td>Switch gear</td>
       <td>
-        <input type='text' class="form-control" id="cusmnf" name="gmnf" placeholder='Manufacturer' >      
+        <input type='text' class="form-control" id="cusmnf" name="gmnf" placeholder='Manufacturer' onkeyup="csgear_add_dis()">      
       </td>
       <td>
-      <input type='text' class="form-control" id="cusmodel" name="gmodel" placeholder='Model Name'  >
+      <input type='text' class="form-control" id="cusmodel" name="gmodel" placeholder='Model Name' onkeyup="csgear_add_dis()" >
       </td>
       <td>
-        <input type="text" class="form-control" id="cus_qty" placeholder="Quantity" name="g_qty" >
+        <input type="number" class="form-control" id="cus_qty" placeholder="Quantity" name="g_qty" onkeyup="csgear_add_dis()">
       </td>
       <td>
-        <input type="text" class="form-control" placeholder="Rating"  name="g_power" id='g_power'>
+        <input type="number" class="form-control" placeholder="Rating"  name="g_power" id='cusg_power' onkeyup="csgear_add_dis()">
       </td>
       <td>
-        <input type="text" class="form-control" placeholder="Power Loss" id="pwrloss">
+        <input type="number" class="form-control" placeholder="Power Loss" id="cuspwrloss" onkeyup="csgear_add_dis()">
       </td>
       <td>
-        <button type="button" class="btn btn-primary" id='sgadd' disabled>Add</button>
+        <button type="button" class="btn btn-primary" id='csgadd' onclick='csgear_s_table()' disabled>Add</button>
       </td>
     </tr>
   </tbody>
@@ -600,9 +613,6 @@ else{
 <!--switch gear separate table load-->
 </div>
 <!--custom sg ends here-->
-
-
-
 
 <!--rated current summery-->
 <table class="table" id="rcsumm">
@@ -635,9 +645,6 @@ $(function(){ //Hide all the divs on start
     $("#forced").hide();
     $("#air").hide();
     $("#larea").prop('disabled', true);
-
-
-
 });
 
 
@@ -937,6 +944,7 @@ function pcmaterial_load(){ // cable material loader - startup
         });
 }
 
+
 function pctype_load(val){ // power cable types loader
 
   pcable_add_dis();
@@ -964,7 +972,7 @@ $.ajax({
 
 function pcable_cal(){ // power cable resistance calculator
 
-  pcable_add_dis(); //power cable add button diable
+  pcable_add_dis(); //power cable add button disble
 
   var pc_mat = document.getElementById("pc_mat").value;
   var pc_type = document.getElementById("pc_type").value;
@@ -989,11 +997,10 @@ function pcable_cal(){ // power cable resistance calculator
             pc_cal: 'ok',
             mat: pc_mat, // power cable material
             ptype: pc_type, // power cable type
-            size: pc_size,
+            size: pc_size,  // pc_size
             runs: pc_runs,
             len: pc_length,
-            curr: pc_current
-            
+            curr: pc_current  
           },
           dataType:'json',
           success: function pcable_cal (response) { 
@@ -1128,6 +1135,17 @@ function prow(ele){ //  power loss row deletion
   sgdrow(ele);
  }
 
+ function csgurow(ele){ //switchgear individual table update
+  row = ele.parentNode.parentNode.rowIndex;
+  var theTbl = document.getElementById('csgsumm');
+  document.getElementById('cusmnf').value = theTbl.rows[row].cells[0].innerHTML;
+  document.getElementById('cusmodel').value = theTbl.rows[row].cells[1].innerHTML;
+  document.getElementById('cus_qty').value = theTbl.rows[row].cells[2].innerHTML;
+  document.getElementById('cusg_power').value = theTbl.rows[row].cells[3].innerHTML;
+  document.getElementById('cuspwrloss').value = theTbl.rows[row].cells[4].innerHTML;
+  csgdrow(ele);
+ }
+
 
 function bbploss_calc(){ //bus bar power loss calc
   var table = document.getElementById("bbsumm"), sumVal = 0;
@@ -1160,11 +1178,11 @@ function sgploss_calc(){ // switch gear power loss
     t_ploss_calc();
 }
 
-function csgploss_calc(){ // switch gear power loss
+function csgploss_calc(){ // custom switch gear power loss
   var table = document.getElementById("csgsumm"), sumVal = 0;
     for(var i = 1; i < table.rows.length; i++)
     {
-      sumVal = sumVal + parseFloat(table.rows[i].cells[6].innerHTML);
+      sumVal = sumVal + parseFloat(table.rows[i].cells[4].innerHTML);
     }
     document.getElementById("c_sg_sum_value").innerHTML = sumVal.toFixed(2);
     t_ploss_calc();
@@ -1175,8 +1193,9 @@ function t_ploss_calc(){ // total power loss calculation
     bb = document.getElementById("bb_sum_value").innerHTML;
     pc = document.getElementById("pc_sum_value").innerHTML;
     sg = document.getElementById("sg_sum_value").innerHTML;
+    csg = document.getElementById("c_sg_sum_value").innerHTML;
 
-  var tot = parseFloat(bb) + parseFloat(pc) + parseFloat(sg);
+  var tot = parseFloat(bb) + parseFloat(pc) + parseFloat(sg) + parseFloat(csg);
   document.getElementById("total_sum_value").innerHTML = tot.toFixed(2);
 
 }
@@ -1243,7 +1262,23 @@ function bbar_add_dis(){ //bus bar add buton disable
       }
 }
 
+function csgear_add_dis(){ //custom switch gear disable 
 
+  var csg_ploss = $('#cuspwrloss').val();
+  var csg_mnf = $('#cusmnf').val();
+  var csg_model = $('#cusmodel').val();
+  var csg_range = $('#cus_qty').val();
+  var csg_qty = $('#cusg_power').val();
+
+  if(csg_ploss !='' && csg_mnf != '' && csg_model != '' && csg_range != '' && csg_qty !=''){
+        document.getElementById("csgadd").disabled = false; 
+      }
+  else{
+        document.getElementById("csgadd").disabled = true; 
+      }
+
+
+}
 //bus bar separate table addition
 
 function bbar_s_table(){ //bus bar separate table load
@@ -1315,12 +1350,40 @@ document.getElementById("g_qty").value = "";
 document.getElementById("sgadd").disabled = true; 
 
 
-var newrow = '<tr><td>'+ sg_mnf +'</td><td>'+ sg_type +'</td><td>'+ sg_range +'</td><td>'+ sg_model +'</td><td>'+ sg_qty +'</td><td>' + sg_rate + '</td><td>' + sg_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="sgdrow()" >Delete</button><button type="button" class="btn btn-warning" onclick="sgurow(this)">Update</button></td></tr>';
+var newrow = '<tr><td>'+ sg_mnf +'</td><td>'+ sg_type +'</td><td>'+ sg_range +'</td><td>'+ sg_model +'</td><td>'+ sg_qty +'</td><td>' + sg_rate + '</td><td>' + sg_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="sgdrow(this)" >Delete</button><button type="button" class="btn btn-warning" onclick="sgurow(this)">Update</button></td></tr>';
 $('#sgsumm tr:last').after(newrow);
 document.getElementById("g_qty").value = "";
 document.getElementById("sgadd").disabled = true; 
 sgploss_calc();
 }
+
+
+function csgear_s_table(){
+  // custom switch gear separate table load
+
+var csg_ploss = $('#cuspwrloss').val();
+var csg_mnf = $('#cusmnf').val();
+var csg_model = $('#cusmodel').val();
+var csg_range = $('#cus_qty').val();
+var csg_qty = $('#cusg_power').val();
+
+document.getElementById("cus_qty").value = "";
+document.getElementById("csgadd").disabled = true; 
+
+
+var newrow = '<tr><td>'+ csg_mnf +'</td><td>'+ csg_model +'</td><td>'+ csg_range +'</td><td>'+ csg_qty +'</td><td>'+ csg_ploss + '</td><td><button type="button" class="btn btn-danger" onclick="csgdrow(this)" >Delete</button><button type="button" class="btn btn-warning" onclick="csgurow(this)">Update</button></td></tr>';
+$('#csgsumm tr:last').after(newrow);
+document.getElementById("cus_qty").value = "";
+document.getElementById("cuspwrloss").value = "";
+document.getElementById("cusmnf").value = "";
+document.getElementById("cusmodel").value = "";
+document.getElementById("cus_qty").value = "";
+document.getElementById("cusg_power").value = "";
+
+document.getElementById("csgadd").disabled = true; 
+csgploss_calc();
+}
+
 
 function ef_cooling(){ //t0.5 calculation
         
