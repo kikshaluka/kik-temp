@@ -65,13 +65,7 @@ else{
   <div class="form-group">
     <label class="control-label col-sm-3" for="csys" data-toggle="tooltip" title="Cubicle number">Cubicle Number:</label>
     <div class="col-sm-5">
-        <select class="form-control" id="cnum" >
-          <option value="0">--select option--</option>
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-        </select>
+    <span id="cub_num">1</span>
     </div>
     </div> 
 
@@ -631,7 +625,26 @@ else{
 <!--switch gear ends-->
 </div>
 <button type="button" class="btn btn-primary btn-lg" onclick="calcutaion()">Send</button>
+<button type="button" class="btn btn-success btn-lg" onclick="save_gen()">View</button>
+<button type="button" class="btn btn-success btn-lg" >Print</button>
   <!--ends here-->
+    <br/><br/><br/><br/>
+    <!--power loss summery-->
+<table class="table" id="plosssumm">
+    <thead class="thead-dark">
+      <tr>
+        <th>Cubicle Number</th>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Power Loss</th>
+      </tr>
+    </thead>
+    <tbody> 
+    </tbody>
+  </table>
+
+
+
 </div>
 </body>
 
@@ -1475,6 +1488,41 @@ function ef_cooling(){ //t0.5 calculation
   else{
     alert("Fill the empty boxes");
   }
+}
+
+function save_gen(){
+
+  //var row  = document.getElementById("myTable").rows.length;
+  var cub = parseFloat(document.getElementById("cub_num").innerHTML);
+
+  var bbtable = document.getElementById("bbsumm");    //bus bar
+  var pctable = document.getElementById("pcsumm");    //power cable
+  var sgtable = document.getElementById("sgsumm");    //switch gear
+  var csgtable = document.getElementById("csgsumm");  //custom switch gear
+
+  for(var i = 1; i < bbtable.rows.length; i++) //for busbar table
+  {
+    var name = bbtable.rows[i].cells[0].innerHTML;
+    var ploss = bbtable.rows[i].cells[7].innerHTML;
+    var newrow = '<tr><td>'+ cub +'</td><td>Bus bar</td><td>'+ name +'</td><td>'+ ploss +'</td></tr>';
+    $('#plosssumm tr:last').after(newrow);
+  }
+  for(var i = 1; i < pctable.rows.length; i++) //for power cable
+  {
+    var name = pctable.rows[i].cells[0].innerHTML;
+    var ploss = pctable.rows[i].cells[7].innerHTML;
+    var newrow = '<tr><td>'+ cub +'</td><td>Power Cable</td><td>'+ name +'</td><td>'+ ploss +'</td></tr>';
+    $('#plosssumm tr:last').after(newrow);
+  }
+
+    $("#bbsumm").find("tr:gt(0)").remove();
+    $("#pcsumm").find("tr:gt(0)").remove();
+
+    document.getElementById("bb_sum_value").innerHTML = 0;
+    document.getElementById("pc_sum_value").innerHTML = 0;
+    document.getElementById("total_sum_value").innerHTML = 0;
+    document.getElementById("cub_num").innerHTML = cub+1;
+
 }
 
 
