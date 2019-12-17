@@ -609,12 +609,28 @@ else{
 <!--custom sg ends here-->
 
 <!--rated current summery-->
-<table class="table" id="rcsumm">
+<table class="table" id="totplosssumm">
     <thead class="thead-dark">
       <tr>
         <th>Name</th>
         <th>Power Loss</th>
         <th>Action</th>
+      </tr>
+      <tr>
+        <td>Busbar</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>Power Cable</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>Switch Gear</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>Custom Switch Gear</td>
+        <td>0</td>
       </tr>
     </thead>
     <tbody> 
@@ -1318,6 +1334,7 @@ function bbar_s_table(){ //bus bar separate table load
   document.getElementById("bbadd").disabled = true;
 
   bbploss_calc();
+  change_value();
 
 }
 
@@ -1343,6 +1360,7 @@ function pcable_s_table(){
   document.getElementById("pcadd").disabled = true;
 
   pcploss_calc()
+  change_value();
 
 
 }
@@ -1368,6 +1386,7 @@ $('#sgsumm tr:last').after(newrow);
 document.getElementById("g_qty").value = "";
 document.getElementById("sgadd").disabled = true; 
 sgploss_calc();
+change_value();
 }
 
 
@@ -1395,6 +1414,7 @@ document.getElementById("cusg_power").value = "";
 
 document.getElementById("csgadd").disabled = true; 
 csgploss_calc();
+change_value();
 }
 
 
@@ -1507,6 +1527,7 @@ function save_gen(){
     var newrow = '<tr><td>'+ cub +'</td><td>Bus bar</td><td>'+ name +'</td><td>'+ ploss +'</td></tr>';
     $('#plosssumm tr:last').after(newrow);
   }
+  
   for(var i = 1; i < pctable.rows.length; i++) //for power cable
   {
     var name = pctable.rows[i].cells[0].innerHTML;
@@ -1515,16 +1536,52 @@ function save_gen(){
     $('#plosssumm tr:last').after(newrow);
   }
 
+  for(var i = 1; i < sgtable.rows.length; i++) //for switch gear
+  {
+    var name = sgtable.rows[i].cells[0].innerHTML +" "+ sgtable.rows[i].cells[1].innerHTML +" "+ sgtable.rows[i].cells[2].innerHTML +" "+ sgtable.rows[i].cells[3].innerHTML;
+    var ploss = sgtable.rows[i].cells[6].innerHTML;
+    var newrow = '<tr><td>'+ cub +'</td><td>Switch gear</td><td>'+ name +'</td><td>'+ ploss +'</td></tr>';
+    $('#plosssumm tr:last').after(newrow);
+  }
+
+  for(var i = 1; i < csgtable.rows.length; i++) //for custom switch gear
+  {
+    var name = csgtable.rows[i].cells[0].innerHTML +" "+ csgtable.rows[i].cells[1].innerHTML;
+    var ploss = csgtable.rows[i].cells[4].innerHTML;
+    var newrow = '<tr><td>'+ cub +'</td><td>Switch gear</td><td>'+ name +'</td><td>'+ ploss +'</td></tr>';
+    $('#plosssumm tr:last').after(newrow);
+  }
+
     $("#bbsumm").find("tr:gt(0)").remove();
     $("#pcsumm").find("tr:gt(0)").remove();
+    $("#sgsumm").find("tr:gt(0)").remove();
+    $("#csgsumm").find("tr:gt(0)").remove();
 
     document.getElementById("bb_sum_value").innerHTML = 0;
     document.getElementById("pc_sum_value").innerHTML = 0;
+    document.getElementById("sg_sum_value").innerHTML = 0;
+    document.getElementById("c_sg_sum_value").innerHTML = 0;
     document.getElementById("total_sum_value").innerHTML = 0;
+
+    document.getElementById('totplosssumm').rows[parseInt(1,10)].cells[parseInt(1,10)].innerHTML= 0;
+  document.getElementById('totplosssumm').rows[parseInt(2,10)].cells[parseInt(1,10)].innerHTML= 0;
+  document.getElementById('totplosssumm').rows[parseInt(3,10)].cells[parseInt(1,10)].innerHTML= 0;
+  document.getElementById('totplosssumm').rows[parseInt(4,10)].cells[parseInt(1,10)].innerHTML= 0;
+
+
     document.getElementById("cub_num").innerHTML = cub+1;
+
 
 }
 
+function change_value(){
+  document.getElementById('totplosssumm').rows[parseInt(1,10)].cells[parseInt(1,10)].innerHTML= document.getElementById("bb_sum_value").innerHTML;
+  document.getElementById('totplosssumm').rows[parseInt(2,10)].cells[parseInt(1,10)].innerHTML= document.getElementById("pc_sum_value").innerHTML;
+  document.getElementById('totplosssumm').rows[parseInt(3,10)].cells[parseInt(1,10)].innerHTML= document.getElementById("sg_sum_value").innerHTML;
+  document.getElementById('totplosssumm').rows[parseInt(4,10)].cells[parseInt(1,10)].innerHTML= document.getElementById("c_sg_sum_value").innerHTML;
+
+
+}
 
 </script>
 </html>
