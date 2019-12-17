@@ -6,7 +6,7 @@ include_once('conn.php');
 
 
 if(!isset($_SESSION['name'])){
-  header("Location: http://localhost/kik-heat/index.php"); 
+  header("Location: index.php"); 
 }
 else{
   $name=$_SESSION['name'];
@@ -38,7 +38,7 @@ else{
 
 
 <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <a href="#" class="navbar-brand"><?php echo "$name"?></a>
+        <a class="navbar-brand"><?php echo "$name"?></a>
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -1582,6 +1582,48 @@ function change_value(){
 
 
 }
+
+function bbar_ins(){ // busbar insert to db 
+
+  var bbtable = document.getElementById("bbsumm");    //busbar
+
+  for(var i = 1; i < bbtable.rows.length; i++) //for busbar table
+  {
+
+    var cub = document.getElementById("cub_num").innerHTML;
+    var des = bbtable.rows[i].cells[0].innerHTML;
+    var mat = bbtable.rows[i].cells[1].innerHTML;
+    var wid = bbtable.rows[i].cells[2].innerHTML;
+    var thi = bbtable.rows[i].cells[3].innerHTML;
+    var run = bbtable.rows[i].cells[4].innerHTML;
+    var len = bbtable.rows[i].cells[5].innerHTML;
+    var curr = bbtable.rows[i].cells[6].innerHTML;
+    var ploss = bbtable.rows[i].cells[7].innerHTML;
+    $.ajax({
+        type: 'POST',
+        url: 'cal-insert.php',
+        data:
+        {
+          bb_ins: 'ok',
+          bdes: des,    //bus bar description
+          bmat: mat,    //bus bar material
+          bwid: wid,    //bus bar width
+          bthk: thk,    //bus bar thickness
+          brun: run,    //bus bar run
+          blen: len,    //bus bar length
+          bcurr: curr,  //bus bar currency
+          bploss: ploss //bus bar currency
+        },
+        dataType:'json',
+        success: function bbar_ins (response) { 
+          alert(response);        
+        }
+      });
+  }
+}
+
+
+
 
 </script>
 </html>
